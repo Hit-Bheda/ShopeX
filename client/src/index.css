@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'WFVisuals'; /* Font name to use in CSS */
+  src: url('./assets/Fonts/671a6dd343aadf5c220af2d8_WFVisualSans-SemiBold.woff2') format('woff2');
+  font-weight: 600; /* Regular weight */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'WFVisuals';
+  src: url('./assets/Fonts/671a6dd343aadf5c220af2de_WFVisualSans-RegularText.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'WFVisuals';
+  src: url('./assets/Fonts/671a6dd343aadf5c220af2da_WFVisualSans-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+    font-family: 'WFVisualstext';
+    src: url('./assets/Fonts/671a6dd343aadf5c220af2dd_WFVisualSans-SemiBoldText.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+  }
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,body{
+    width: 100%;
+    height: 100%;
+}
+
+.group:hover {
+  background-color: var(--hover-bg-color);
+}
+
+.group{
+  outline: 3px solid transparent;
+}
