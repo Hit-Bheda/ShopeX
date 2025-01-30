@@ -3,28 +3,47 @@ import Layout from "../components/Layout"
 import Login from "../pages/Login"
 import AuthMiddlware from "../middlewares/AuthMiddleware"
 import App from "../App"
+import ForgotPassword from "@/pages/ForgotPassword"
+
+interface RoutesType  {
+    path: string
+    element: React.ReactNode
+    isPrivate: boolean
+}
 
 const Router = () => {
+
+    const myRoutes: RoutesType[] = [
+        {
+            path: "/login",
+            element: <Login />,
+            isPrivate: false
+        },{
+            path: "/",
+            element: <App />,
+            isPrivate: true
+        },{
+            path: "/forgot-password",
+            element: <ForgotPassword />,
+            isPrivate: false
+        }
+    ]
     return(
         <Routes>
             <Route element={<Layout />}>
-                <Route 
-                    path="/login"
-                    element={
-                        <AuthMiddlware isPrivate={false}>
-                            <Login />
-                        </AuthMiddlware>
-                    }
-                />
-
-                <Route 
-                    path="/"
-                    element={
-                        <AuthMiddlware isPrivate={true}>
-                            <App />
-                        </AuthMiddlware>
-                    }
-                />
+                {
+                    myRoutes.map((route: RoutesType, index) => (
+                        <Route 
+                            path={route.path}
+                            key={index}
+                            element={
+                                <AuthMiddlware isPrivate={route.isPrivate}>
+                                    {route.element}
+                                </AuthMiddlware>
+                            }
+                        />
+                    ))
+                }
             </Route>
         </Routes>
     )

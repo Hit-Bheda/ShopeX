@@ -1,8 +1,15 @@
 import { Outlet } from "react-router"
+import { ThemeProvider } from "./ThemeProvider"
 
 const Layout = () => {
     return(
-        <div><Outlet /></div>
+        <ThemeProvider 
+            defaultTheme="dark" 
+            storageKey="vite-ui-theme">
+
+            <Outlet />
+            
+        </ThemeProvider>
     )
 }
 
