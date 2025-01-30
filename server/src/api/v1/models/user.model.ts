@@ -8,9 +8,6 @@ export class userSchema {
   @prop({ required: true })
   public name!: string;
 
-  @prop({ required: true, unique: true })
-  public username!: string;
-
   @prop({ required: true, unique: true, lowercase: true })
   public email!: string;
 

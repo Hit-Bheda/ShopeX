@@ -1,17 +1,16 @@
 import { Request, Response } from "express";
-import { UserModel } from "../models/user.model";
+import { UserModel } from "../../models/user.model";
 import * as argon2 from "argon2";
-import { loginValidate } from "../utils/login-validate.util";
-import { signupValidate } from "../utils/register-validate.util";
+import { loginValidate, signupValidate } from "../../utils/user-validate.util";
 import jwt from "jsonwebtoken";
-import config from "../../../configs/config";
-import { infoLogger } from "../../../loggers/logger";
+import config from "../../../../configs/config";
+import { infoLogger } from "../../../../loggers/logger";
 
 // Controller For Logining The Existing User!
 export const login = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
   // Perfrming Validation Of All Data
-  const user = await loginValidate(username, email, password);
+  const user = await loginValidate( email, password);
   const refreshToken = jwt.sign({ id: user.id }, config.secret);
   const accessToken = jwt.sign({ refreshToken }, config.secret);
 
@@ -29,7 +28,7 @@ export const login = async (req: Request, res: Response) => {
 export const signup = async (req: Request, res: Response) => {
   const { name, username, email, password } = req.body;
   // Performing Vlidation On All Data
-  await signupValidate(name, username, email, password);
+  await signupValidate(name, email, password);
   const hashPass = await argon2.hash(password);
   const user = await UserModel.create({
     name,

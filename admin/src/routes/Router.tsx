@@ -4,6 +4,7 @@ import Login from "../pages/Login"
 import AuthMiddlware from "../middlewares/AuthMiddleware"
 import App from "../App"
 import ForgotPassword from "@/pages/ForgotPassword"
+import Dashboard from "@/pages/Dashboard"
 
 interface RoutesType  {
     path: string
@@ -26,6 +27,10 @@ const Router = () => {
             path: "/forgot-password",
             element: <ForgotPassword />,
             isPrivate: false
+        },{
+            path: "/dashboard",
+            element: <Dashboard />,
+            isPrivate: true
         }
     ]
     return(
