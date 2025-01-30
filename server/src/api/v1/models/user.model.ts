@@ -17,6 +17,9 @@ export class userSchema {
   @prop({ required: true })
   public password!: string;
 
+  @prop({ enum: ["user","admin"], default: "user"})
+  public role!: "user" | "admin"
+
   @prop({ required: true, default: 0 })
   public verificationCode!: number;
 
