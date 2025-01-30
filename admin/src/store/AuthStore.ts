@@ -1,8 +1,8 @@
 import { create } from "zustand"
 
 type store = {
-    accessToken: string
-    setAccessToken: (auth: string) => void
+    accessToken: string | null
+    setAccessToken: (auth: string | null) => void
     isAuth: boolean
     setIsAuth: (auth: boolean) => void
 }

@@ -12,12 +12,11 @@ export const getToken = async () => {
         const response: Res = await axios.post("http://localhost:4000/api/v1/admin/auth/access-token",null,{withCredentials:true})
         return response.data.accessToken
     }catch(error){
-        console.log(error)
+        console.error(error)
     }
 }
 
 export const login = async (data:z.infer<typeof LoginSchema>) => {
-    console.log(data)
     try {
         const response = await axios.post("http://localhost:4000/api/v1/admin/auth/login",
             data,{
@@ -26,8 +25,6 @@ export const login = async (data:z.infer<typeof LoginSchema>) => {
         )
         return response.data
     } catch (error) {
-        console.log(error);
-        
         return {
             error: axios.isAxiosError(error) && error.response?.data?.message
           ? error.response.data.message
@@ -44,12 +41,12 @@ export const logout = async () => {
             }
         )
     } catch (error) {
-        console.log(error);
+        console.error(error);
         
     }
 }
 
-export const auth = async () => {
+export const verifyAuth = async () => {
     interface resType {
     data: {
         isAuth: boolean
@@ -59,7 +56,7 @@ export const auth = async () => {
         const res:resType = await axios.post("http://localhost:4000/api/v1/admin/auth/is-auth",null,{withCredentials: true})
         return res.data.isAuth
     } catch (error) {
-        console.log(error);
+        console.error(error);
         
     }
 }

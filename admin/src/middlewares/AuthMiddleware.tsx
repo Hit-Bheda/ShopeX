@@ -1,7 +1,7 @@
 import { Navigate } from "react-router";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/AuthStore";
-import { auth, getToken } from "@/api/auth";
+import { getToken, verifyAuth } from "@/api/auth";
 
 interface Props {
     children: React.ReactNode;
@@ -12,40 +12,34 @@ interface Props {
 const AuthMiddleware: React.FC<Props> = ({ children, isPrivate = false }) => {
     const accessToken = useAuthStore((state) => state.accessToken);
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
-    const isAuth = useAuthStore((state) => state.isAuth)
     const setIsAuth = useAuthStore((state) => state.setIsAuth)
 
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const verifyAuth = async () => {
+
+        const checkAuthentication = async () => {
+            setLoading(true)
             try {
-                const res = await auth()
-                
-                if(res) setIsAuth(res)
-                
+                const authResponse = await verifyAuth()
+                const authenticated = !!authResponse
+                setIsAuth(authenticated)
+
+                if(!authenticated)return setAccessToken(null)
+                    
+                const token = await getToken();
+                setAccessToken(token ? String(token) : null)
             } catch (error) {
-                console.log(error);
-                
+                console.log("Auth Initialization Failed! ",error);
+                setIsAuth(false)
+                setAccessToken(null)
+            } finally{
+                setLoading(false)
             }
         }
-        verifyAuth()
-        const initialize = async () => {
-            try {
-                const token = await getToken();
-                if (token) {
-                    setAccessToken(String(token));
-                }
-            } catch (error) {
-                console.error("Error fetching token:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
 
-        if (isAuth && !accessToken) initialize();
-        else setLoading(false);
-    }, [accessToken, setAccessToken, isAuth, setIsAuth]);
+        checkAuthentication()
+    }, [ setAccessToken, setIsAuth]);
 
     if (loading) return <div>Loading...</div>; // Prevent premature redirects
 
