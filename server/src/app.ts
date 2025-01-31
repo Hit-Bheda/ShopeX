@@ -5,6 +5,7 @@ import morgan from "morgan";
 import { morganData, morganFormate } from "./loggers/morgan";
 import v1 from "./api/v1";
 import cookieParser from "cookie-parser";
+import config from "./configs/config";
 
 const app = express();
 
@@ -12,7 +13,7 @@ app.use(morgan(morganFormate, morganData));
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: config.origin,
     credentials: true
   }),
 );
