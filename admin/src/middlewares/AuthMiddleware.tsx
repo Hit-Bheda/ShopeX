@@ -1,7 +1,8 @@
 import { Navigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuthStore } from "../store/AuthStore";
 import { getToken, verifyAuth } from "@/api/auth";
+import Loading from "@/components/Loading";
 
 interface Props {
     children: React.ReactNode;
@@ -13,8 +14,10 @@ const AuthMiddleware: React.FC<Props> = ({ children, isPrivate = false }) => {
     const accessToken = useAuthStore((state) => state.accessToken);
     const setAccessToken = useAuthStore((state) => state.setAccessToken);
     const setIsAuth = useAuthStore((state) => state.setIsAuth)
+    const loading = useAuthStore((state) => state.isLoading)
+    const setLoading = useAuthStore((state) => state.setIsLoading)
 
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
 
     useEffect(() => {
 
@@ -39,9 +42,9 @@ const AuthMiddleware: React.FC<Props> = ({ children, isPrivate = false }) => {
         }
 
         checkAuthentication()
-    }, [ setAccessToken, setIsAuth]);
+    }, [ setAccessToken, setIsAuth, setLoading]);
 
-    if (loading) return <div>Loading...</div>; // Prevent premature redirects
+    if (loading) return <Loading />; // Prevent premature redirects
 
     if (isPrivate && !accessToken) return <Navigate to="/login" replace />;
     if (!isPrivate && accessToken) return <Navigate to="/dashboard" replace />;

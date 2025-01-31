@@ -7,9 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { Checkbox } from "../ui/checkbox"
-import { Link, Navigate } from "react-router"
+import { Link } from "react-router"
 import { login } from "@/api/auth"
-import { useState, useTransition } from "react"
+import { useState } from "react"
 import { FormError } from "../FormError"
 import { FormSuccess } from "../FormSuccess"
 import { useAuthStore } from "@/store/AuthStore"
@@ -17,7 +17,7 @@ import { useAuthStore } from "@/store/AuthStore"
 const LoginForm = () => {
     const [error, setError] = useState<string | undefined>("")
     const [success, setSuccess] = useState<string | undefined>("");
-    const [isPending, startTransition] = useTransition()
+    const [isPending, setIsPending] = useState(false)
 
     const setAccessToken = useAuthStore((state) => state.setAccessToken)
 
@@ -33,18 +33,18 @@ const LoginForm = () => {
         setError("")
         setSuccess("")
 
-        startTransition(() => {
-            login(values)
-            .then((data) => {
-                if(data.error) setError(data.error)
-                setSuccess(data.message)
-                setAccessToken(data.accessToken)
-                return <Navigate to="/" />
-                
-            })
-
-        })
+        try {
+            setIsPending(true)
+                const res = await login(values);
+                setSuccess(res.message);
+                setAccessToken(res.accessToken);
+            } catch (error) {
+                setError(String(error));
+            } finally{
+                setIsPending(false)
+            }
     }
+    
     return(
         <CardWrapper
             heading="Admin Login"
@@ -103,9 +103,10 @@ const LoginForm = () => {
                     </div>
                     <FormError message={error}/>
                     <FormSuccess message={success} />
-                    <Button 
+                    <Button
                         type="submit"
                         className="w-full"
+                        disabled={isPending}
                     >Login</Button>
                     </div>
                 </form>

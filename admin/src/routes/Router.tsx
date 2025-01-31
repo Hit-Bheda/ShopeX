@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router"
 import Layout from "../components/Layout"
 import Login from "../pages/Login"
 import AuthMiddlware from "../middlewares/AuthMiddleware"
-import App from "../App"
 import ForgotPassword from "@/pages/ForgotPassword"
 import Dashboard from "@/pages/Dashboard"
 
@@ -19,10 +18,6 @@ const Router = () => {
             path: "/login",
             element: <Login />,
             isPrivate: false
-        },{
-            path: "/",
-            element: <App />,
-            isPrivate: true
         },{
             path: "/forgot-password",
             element: <ForgotPassword />,

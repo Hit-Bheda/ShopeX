@@ -5,10 +5,13 @@ import { useAuthStore } from "@/store/AuthStore"
 const Dashboard = () => {
     const setAccessToken = useAuthStore((state) => state.setAccessToken)
     const setIsAuth = useAuthStore((state) => state.setIsAuth)
+    const setIsLoading = useAuthStore((state) => state.setIsLoading)
     const handleClick = async() => {
+        setIsLoading(true)
         await logout()
         setAccessToken("")
         setIsAuth(false)
+        setIsLoading(false)
     }
     return(
         <div>

@@ -9,7 +9,6 @@ import { infoLogger } from "../../../../loggers/logger";
 // Controller For Logining The Existing User!
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  infoLogger.info(email,password)
   // Perfrming Validation Of All Data
   const user = await adminLoginValidate(email, password);
   if(!user) return
