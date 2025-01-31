@@ -4,6 +4,7 @@ import Login from "../pages/Login"
 import AuthMiddlware from "../middlewares/AuthMiddleware"
 import ForgotPassword from "@/pages/ForgotPassword"
 import Dashboard from "@/pages/Dashboard"
+import App from "@/App"
 
 interface RoutesType  {
     path: string
@@ -17,6 +18,10 @@ const Router = () => {
         {
             path: "/login",
             element: <Login />,
+            isPrivate: false
+        },{
+            path: "/",
+            element: <App />,
             isPrivate: false
         },{
             path: "/forgot-password",
