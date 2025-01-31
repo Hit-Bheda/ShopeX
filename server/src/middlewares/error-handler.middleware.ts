@@ -1,7 +1,7 @@
 import { errorLogger } from "../loggers/logger";
-import { ErrorRequestHandler } from "express";
+import { ErrorRequestHandler, Request, Response, NextFunction } from "express";
 
-export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+export const errorHandler: ErrorRequestHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
   const statusCode = res.statusCode < 400 ? 500 : res.statusCode;
   errorLogger.error(err.message);
 
