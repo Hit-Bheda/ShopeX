@@ -1,23 +1,55 @@
-import { logout } from "@/api/auth"
-import { Button } from "@/components/ui/button"
-import { useAuthStore } from "@/store/AuthStore"
+import { AppSidebar } from "@/components/AppSidebar"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
+import { Outlet, useLocation } from "react-router"
+
 
 const Dashboard = () => {
-    const setAccessToken = useAuthStore((state) => state.setAccessToken)
-    const setIsAuth = useAuthStore((state) => state.setIsAuth)
-    const setIsLoading = useAuthStore((state) => state.setIsLoading)
-    const handleClick = async() => {
-        setIsLoading(true)
-        await logout()
-        setAccessToken("")
-        setIsAuth(false)
-        setIsLoading(false)
-    }
+  const location = useLocation()
+  let path = ''
+  if(location.pathname === "/dashboard") path = "Overview"
+  else path = location.pathname.split("/")[2][0].toUpperCase() + location.pathname.split("/")[2].slice(1)
     return(
-        <div>
-            <h1>This Is Dashboard</h1>
-            <Button onClick={handleClick}>Logout</Button>
+        <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
+                    Dashboard
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{path}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <Outlet />
         </div>
+      </SidebarInset>
+    </SidebarProvider>
+        
     )
 }
 

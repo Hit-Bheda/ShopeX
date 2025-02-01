@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import { UserModel } from "../../models/user.model";
+import { UserModel, userSchema } from "../../models/user.model";
 import * as argon2 from "argon2";
 import { adminLoginValidate, adminSignupValidate } from "../../utils/admin-validate.util";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../../../../configs/config";
 import { infoLogger } from "../../../../loggers/logger";
+import { decodeType } from "../../types/types";
 
 // Controller For Logining The Existing User!
 export const login = async (req: Request, res: Response) => {
@@ -47,11 +48,22 @@ export const accessToken = async (req: Request, res: Response) => {
     
     if(!refreshToken) throw new Error("Unauthorized User!")
 
+    const decode = jwt.verify(refreshToken, config.secret) as ( decodeType )
+
+
+    
+    // if(!decode) throw new Error("Invalid Token")
+    
+    const { id, name, email, password, role } = await UserModel.findById(decode?.id) as (userSchema & decodeType)
+    const user = {
+      id, name, email, password, role
+    }
+
     const accessToken = jwt.sign({ refreshToken }, config.secret);
 
   res
     .status(200)
-    .json({ accessToken });
+    .json({ accessToken, user });
 }
 
 export const logout = (req: Request, res: Response) => {

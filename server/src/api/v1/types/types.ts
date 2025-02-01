@@ -32,3 +32,7 @@ export interface PayloadType {
   id: string;
   iat: number;
 }
+
+export type decodeType = {
+  id: string
+}

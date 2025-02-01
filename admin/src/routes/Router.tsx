@@ -1,61 +1,51 @@
-import { Route, Routes } from "react-router"
-import Layout from "../components/Layout"
-import Login from "../pages/Login"
-import AuthMiddlware from "../middlewares/AuthMiddleware"
-import ForgotPassword from "@/pages/ForgotPassword"
-import Dashboard from "@/pages/Dashboard"
-import App from "@/App"
-
-interface RoutesType  {
-    path: string
-    element: React.ReactNode
-    isPrivate: boolean
-}
+import { Route, Routes } from "react-router";
+import { useMemo } from "react";
+import Layout from "../components/Layout";
+import Login from "../pages/Login";
+import AuthMiddleware from "../middlewares/AuthMiddleware";
+import ForgotPassword from "@/pages/ForgotPassword";
+import Dashboard from "@/pages/Dashboard";
+import App from "@/App";
+import Overview from "@/components/dashboard/Overview";
+import Categories from "@/components/dashboard/Categories";
+import Products from "@/components/dashboard/Products";
+import Orders from "@/components/dashboard/Orders";
+import NotFound from "@/pages/NotFound"; // Create a separate NotFound page
 
 const Router = () => {
+    const myRoutes = useMemo(() => [
+        { path: "/login", element: <Login />, isPrivate: false },
+        { path: "/", element: <App />, isPrivate: false },
+        { path: "/forgot-password", element: <ForgotPassword />, isPrivate: false },
+        { path: "*", element: <NotFound />, isPrivate: false }
+    ], []);
 
-    const myRoutes: RoutesType[] = [
-        {
-            path: "/login",
-            element: <Login />,
-            isPrivate: false
-        },{
-            path: "/",
-            element: <App />,
-            isPrivate: false
-        },{
-            path: "/forgot-password",
-            element: <ForgotPassword />,
-            isPrivate: false
-        },{
-            path: "/dashboard",
-            element: <Dashboard />,
-            isPrivate: true
-        },{
-          path: "*",
-          element: <div className="w-full h-screen flex items-center justify-center"><h1 className="text-xl">404 Page Not Found</h1></div>,
-          isPrivate: false
-        }
-    ]
-    return(
+    const dashboardRoutes = useMemo(() => [
+        { path: "", element: <Overview /> },
+        { path: "categories", element: <Categories /> },
+        { path: "products", element: <Products /> },
+        { path: "orders", element: <Orders /> }
+    ], []);
+
+    return (
         <Routes>
             <Route element={<Layout />}>
-                {
-                    myRoutes.map((route: RoutesType, index) => (
-                        <Route 
-                            path={route.path}
-                            key={index}
-                            element={
-                                <AuthMiddlware isPrivate={route.isPrivate}>
-                                    {route.element}
-                                </AuthMiddlware>
-                            }
-                        />
-                    ))
-                }
+                {myRoutes.map((route, index) => (
+                    <Route 
+                        key={index}
+                        path={route.path}
+                        element={<AuthMiddleware isPrivate={route.isPrivate}>{route.element}</AuthMiddleware>}
+                    />
+                ))}
+
+                <Route path="/dashboard" element={<AuthMiddleware isPrivate={true}><Dashboard /></AuthMiddleware>}>
+                    {dashboardRoutes.map((route, index) => (
+                        <Route key={index} path={route.path} element={route.element} />
+                    ))}
+                </Route>
             </Route>
         </Routes>
-    )
-}
+    );
+};
 
-export default Router
+export default Router;

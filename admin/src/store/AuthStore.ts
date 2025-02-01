@@ -1,5 +1,13 @@
 import { create } from "zustand"
 
+export interface userType {
+    id: string,
+    name: string,
+    email: string,
+    password: string,
+    role: string
+}
+
 type store = {
     accessToken: string | null
     setAccessToken: (auth: string | null) => void
@@ -7,6 +15,8 @@ type store = {
     setIsAuth: (auth: boolean) => void
     isLoading: boolean
     setIsLoading: (status: boolean) => void
+    user: userType | null
+    setUser: (data: userType) => void
 }
 
 export const useAuthStore = create<store>((set) => ({
@@ -24,5 +34,7 @@ export const useAuthStore = create<store>((set) => ({
     } else {
         set({isLoading:status})
     }
-    }
+    },
+    user: null,
+    setUser: (data) => set({user: data})
 }))
