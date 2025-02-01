@@ -36,6 +36,7 @@ const LoginForm = () => {
         try {
             setIsPending(true)
                 const res = await login(values);
+                if(res.error) setError(res.error)
                 setSuccess(res.message);
                 setAccessToken(res.accessToken);
             } catch (error) {
