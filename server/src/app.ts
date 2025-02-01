@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { errorHandler } from "./middlewares/error-handler.middleware";
 import morgan from "morgan";
@@ -17,6 +17,20 @@ app.use(
     credentials: true
   }),
 );
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.header("Access-Control-Allow-Origin", "https://admin-shopex.vercel.app");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  
+  // Handle preflight requests
+  if (req.method === "OPTIONS") {
+      res.sendStatus(200);
+  }
+  
+  next();
+});
+
 app.use(cookieParser());
 
 app.use("/api/v1", v1);
