@@ -8,15 +8,10 @@ const AdminRouter = Router();
 
 const privateRoutes: Route[] = [
   {
-    path: "/products",
-    method: "get",
+    path: "/add-product",
+    method: "post",
     handler: sendProducts,
-  },
-  {
-    path: "/products/:id",
-    method: "get",
-    handler: sendSingleProduct,
-  },
+  }
 ];
 
 privateRoutes.forEach((route) => {
