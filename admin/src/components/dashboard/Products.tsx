@@ -10,7 +10,7 @@ import {
     TableRow
 } from "@/components/ui/table";
 import {Input} from "../ui/input";
-import AddProductDialog from "../AddProductDialog";
+import AddProductDialog from "./AddProductDialog";
 
 const Products = () => {
     return (
