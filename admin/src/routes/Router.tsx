@@ -5,7 +5,6 @@ import Login from "../pages/Login";
 import AuthMiddleware from "../middlewares/AuthMiddleware";
 import ForgotPassword from "@/pages/ForgotPassword";
 import Dashboard from "@/pages/Dashboard";
-import App from "@/App";
 import Overview from "@/components/dashboard/Overview";
 import Categories from "@/components/dashboard/Categories";
 import Products from "@/components/dashboard/Products";
@@ -15,7 +14,7 @@ import NotFound from "@/pages/NotFound"; // Create a separate NotFound page
 const Router = () => {
     const myRoutes = useMemo(() => [
         { path: "/login", element: <Login />, isPrivate: false },
-        { path: "/", element: <App />, isPrivate: false },
+        { path: "/", element: <Dashboard />, isPrivate: false },
         { path: "/forgot-password", element: <ForgotPassword />, isPrivate: false },
         { path: "*", element: <NotFound />, isPrivate: false }
     ], []);
