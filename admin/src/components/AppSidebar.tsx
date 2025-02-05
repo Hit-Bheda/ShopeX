@@ -62,7 +62,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavActions actions={data.actions} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user ? {name:user.name,email:user.email} : {name: "",email:""}} />
+        <NavUser user={user ?? { name: "User", email: "user@example.com" }} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

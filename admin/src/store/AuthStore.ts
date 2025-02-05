@@ -1,46 +1,37 @@
-import { create } from "zustand"
+import { create } from "zustand";
 
 export interface userType {
-    id: string,
-    name: string,
-    email: string,
-    password: string,
-    role: string
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+    role: string;
 }
 
-type store = {
-    accessToken: string | null
-    setAccessToken: (auth: string | null) => void
-    isAuth: boolean
-    setIsAuth: (auth: boolean) => void
-    isLoading: boolean
-    setIsLoading: (status: boolean) => void
-    user: userType | null
-    setUser: (data: userType) => void
-}
+type Store = {
+    accessToken: string | null;
+    setAccessToken: (token: string | null) => void;
+    isAuth: boolean;
+    setIsAuth: (auth: boolean) => void;
+    isLoading: boolean;
+    setIsLoading: (status: boolean) => void;
+    user: userType | null;
+    setUser: (data: userType | null) => void;
+};
 
-export const useAuthStore = create<store>((set) => ({
-    accessToken: "",
-    setAccessToken: (token) => set({accessToken: token}),
+export const useAuthStore = create<Store>((set) => ({
+    accessToken: null,
+    setAccessToken: (token) => set(() => ({ accessToken: token })),
 
     isAuth: false,
-    setIsAuth: (auth) => set({isAuth: auth}),
+    setIsAuth: (auth) => set(() => ({ isAuth: auth })),
 
     isLoading: true,
-    setIsLoading: (status) => {
-        if(status == false){ setTimeout(() => {
-            set({isLoading: status})
-        },500)
-    } else {
-        set({isLoading:status})
-    }
-    },
-    user: {
-        id: "",
-        email: "",
-        name: "",
-        password: "",
-        role: ""
-    },
-    setUser: (data) => set({user: data})
-}))
+    setIsLoading: (status) =>
+        status === false
+            ? setTimeout(() => set(() => ({ isLoading: false })), 500)
+            : set(() => ({ isLoading: true })),
+
+    user: null,
+    setUser: (data) => set(() => ({ user: data })),
+}));
