@@ -13,13 +13,13 @@ export const login = async (req: Request, res: Response) => {
   // Perfrming Validation Of All Data
   const user = await adminLoginValidate(email, password);
   if(!user) return
-  const refreshToken = jwt.sign({ id: user.id }, config.secret);
-  const accessToken = jwt.sign({ refreshToken }, config.secret);
+  const refreshToken = jwt.sign({ id: user.id }, config.secret, {expiresIn: '7d'});
+  const accessToken = jwt.sign({ refreshToken }, config.secret, {expiresIn: '1h'});
 
   res
     .cookie("refreshToken", `${refreshToken}`, {
       secure: true,
-      sameSite: "strict",
+      sameSite: "none",
       httpOnly: true,
     })
     .status(200)

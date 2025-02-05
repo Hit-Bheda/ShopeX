@@ -61,6 +61,6 @@ export const verifyAuth = async () => {
         return res.data.isAuth
     } catch (error) {
         console.error(error);
-        
+        return false
     }
 }
