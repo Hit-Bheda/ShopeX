@@ -36,7 +36,8 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-  const avatar = user.name.split(" ")[0][0] + user.name.split(" ")[1][0]
+  let avatar;
+  if(user) avatar = user.name.split(" ")[0][0] + user.name.split(" ")[1][0]
 
   const setAccessToken = useAuthStore((state) => state.setAccessToken)
     const setIsAuth = useAuthStore((state) => state.setIsAuth)
