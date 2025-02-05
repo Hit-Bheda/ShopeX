@@ -29,14 +29,14 @@ const AuthMiddleware: React.FC<Props> = ({ children, isPrivate = false }) => {
                 const authResponse = await verifyAuth()
                 const authenticated = !!authResponse
                 setIsAuth(authenticated)
+                console.log(authenticated);
+                
 
                 if(!authenticated)return setAccessToken(null)
                     
                 const tokenData = await getToken();
-                if(tokenData){
-                    setUser(tokenData.user)
-                    setAccessToken(tokenData?.accessToken ? String(tokenData.accessToken) : null)
-                } 
+                if(tokenData?.accessToken) setAccessToken(tokenData?.accessToken ? String(tokenData.accessToken) : null)
+                if(tokenData?.user) setUser(tokenData.user)
             } catch (error) {
                 console.log("Auth Initialization Failed! ",error);
                 setIsAuth(false)
