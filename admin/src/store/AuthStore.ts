@@ -35,6 +35,12 @@ export const useAuthStore = create<store>((set) => ({
         set({isLoading:status})
     }
     },
-    user: null,
+    user: {
+        id: "",
+        email: "",
+        name: "",
+        password: "",
+        role: ""
+    },
     setUser: (data) => set({user: data})
 }))
