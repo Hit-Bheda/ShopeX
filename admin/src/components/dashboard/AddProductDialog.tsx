@@ -12,18 +12,26 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import React from "react";
 import { Textarea } from "../ui/textarea";
+import { ProductCategoryDropdown } from "./ProductCategoryDropdown";
+import { SizeSelector } from "./SizeSelector";
 
 interface Props {
-    children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const AddProductDialog: React.FC<Props> = ({ children }) => {
+  const handleCategorySelect = (category: string) => {
+    console.log("Selected category:", category);
+    // Here you would typically update your state or trigger a data fetch
+  };
+  const handleSizeChange = (sizes: string[]) => {
+    console.log("Selected sizes:", sizes)
+    // Here you would typically update your state or trigger a data fetch
+  }
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        { children }
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="sm:max-w-[500px] max-h-[100vh]">
         <DialogHeader>
           <DialogTitle>Add Product</DialogTitle>
           <DialogDescription>
@@ -31,47 +39,50 @@ const AddProductDialog: React.FC<Props> = ({ children }) => {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="thumbnail" className="text-right">
-              Thumbnail Image
-            </Label>
-            <Input id="thumbnail" className="col-span-3" type="file" />
+          <div className="grid gap-2">
+            <Label htmlFor="image">Upload Image</Label>
+            <Input id="image" type="file" className="cursor-pointer" />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="hover-image" className="text-right">
-              Hover Image
-            </Label>
-            <Input id="hover-image" className="col-span-3" type="file" />
+          <div className="flex justify-between">
+            <div>
+              <div className="grid gap-2">
+                <Label htmlFor="name">Name</Label>
+                <Input type="text" id="name" placeholder="T-Shirt" />
+              </div>
+            </div>
+            <div>
+              <div className="grid gap-2">
+                <Label>Category</Label>
+                <ProductCategoryDropdown
+                  onSelectCategory={handleCategorySelect}
+                  placeholder="Choose a category"
+                  className="w-[200px]"
+                />
+              </div>
+            </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" className="col-span-3" />
+          <div className="grid gap-2">
+            <Label htmlFor="description">Description</Label>
+            <Textarea id="description" placeholder="This is description!" className="max-h-[150px]" />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="description" className="text-right">
-              Description
-            </Label>
-            <Textarea id="descriptiom" className="col-span-3" />
+
+          <div className="flex gap-2 justify-between">
+            <div>
+              <div className="grid gap-2">
+                <Label htmlFor="quantity">Quantity</Label>
+                <Input type="number" id="quantity" placeholder="10-15.." />
+              </div>
+            </div>
+            <div>
+              <div className="grid gap-2">
+                <Label htmlFor="price">Price</Label>
+                <Input type="number" id="price" placeholder="0.0$" />
+              </div>
+            </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Sizes
-            </Label>
-            <div> <Button>XL</Button></div>
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="quantity" className="text-right">
-              Quantity
-            </Label>
-            <Input id="auantity" className="col-span-3" type="number" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="price" className="text-right">
-              Price
-            </Label>
-            <Input id="price" className="col-span-3" type="number" />
+
+          <div className="grid">
+            <SizeSelector onSizeChange={handleSizeChange}/>
           </div>
         </div>
         <DialogFooter>

@@ -19,7 +19,6 @@ const AuthMiddleware: React.FC<Props> = ({ children, isPrivate = false }) => {
     const setLoading = useAuthStore((state) => state.setIsLoading)
     const setUser = useAuthStore((state) => state.setUser)
 
-    // const [loading, setLoading] = useState(true);
 
     useEffect(() => {
 

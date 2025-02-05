@@ -27,10 +27,13 @@ export const useAuthStore = create<Store>((set) => ({
     setIsAuth: (auth) => set(() => ({ isAuth: auth })),
 
     isLoading: true,
-    setIsLoading: (status) =>
-        status === false
-            ? setTimeout(() => set(() => ({ isLoading: false })), 500)
-            : set(() => ({ isLoading: true })),
+    setIsLoading: (status) => {
+        if(status === false){
+            setTimeout(() => set(() => ({ isLoading: false })), 500)
+        }else{
+            set({ isLoading: true })
+        }
+    },
 
     user: null,
     setUser: (data) => set(() => ({ user: data })),
