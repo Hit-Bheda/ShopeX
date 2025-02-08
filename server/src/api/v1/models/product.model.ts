@@ -1,21 +1,22 @@
-import { getModelForClass, prop, modelOptions } from "@typegoose/typegoose";
+import { getModelForClass, prop, modelOptions, Ref } from "@typegoose/typegoose";
+import { Category } from "./category.model";
 
 @modelOptions({
     schemaOptions: { timestamps: true },
     options: { allowMixed: 0 }
 })
 export class Product{
+    @prop({ type: () => [String]})
+    public images!: string[]
+
     @prop({ required: true })
     public name!: string
 
     @prop()
     public description!: string
 
-    @prop()
-    public thumbnail!:string
-
-    @prop({ type: () => [String]})
-    public images!: string[]
+    @prop({ ref: () => Category})
+    public category!: Ref<Category>
 
     @prop({ type: () => [String] })
     public sizes!: string[]

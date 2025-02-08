@@ -4,16 +4,17 @@ import config from "../../../configs/config";
 import { UserModel } from "../models/user.model";
 import { getErrorMessage } from "../../../utils/get-error-message.util";
 
-const UserVerifier = async (
+const AdminVerifier = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-
+    console.log(req.headers);
+    
     // Check If Reqest Hesder Exists Or Not If Exits Then Get It And Verify It If Not Then Throw Error
-    if (!req.headers.accesstoken) throw new Error("Token Doesn't Exists");
-    const accessToken = req.headers.accesstoken;
+    if (!req.headers.authorization) throw new Error("Token Doesn't Exists");
+    const accessToken = req.headers.authorization;
     const verify = jwt.verify(String(accessToken), config.secret) as JwtPayload;
     
     // Verify That The Access Token Conatins Refresh Token
@@ -34,6 +35,9 @@ const UserVerifier = async (
     const data = await UserModel.findById(id);
     if (!data) throw new Error("Invalid Token!");
 
+    // Verify The Role Of The User
+    if(data?.role != "admin") throw new Error("Unauthorized User!") 
+
     // If Evrything Is Alright Then Let User Access The API
     next();
   } catch (error) {
@@ -41,4 +45,4 @@ const UserVerifier = async (
   }
 };
 
-export default UserVerifier;
+export default AdminVerifier;

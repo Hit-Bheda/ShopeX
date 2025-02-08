@@ -5,12 +5,12 @@ import { Product } from "./product.model";
 @modelOptions({
     options: { allowMixed: 0}
 })
-class Category{
-    @prop()
+export class Category{
+    @prop({ required: true, unique: true })
     public name!: string
 
-    @prop({ type: () => Product})
-    public products!: Ref<Product>[]
+    @prop()
+    public description!: string
 }
 
 export const CategoryModel = getModelForClass(Category)

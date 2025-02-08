@@ -1,4 +1,4 @@
-import {Ellipsis, Plus} from "lucide-react";
+import { Plus } from "lucide-react";
 import {Button} from "../ui/button";
 import {
     Table,
@@ -9,8 +9,10 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table";
+
 import {Input} from "../ui/input";
 import AddProductDialog from "./AddProductDialog";
+import ProductActionsDropdown from "./ProductActions.Dropdown";
 
 const Products = () => {
     return (
@@ -53,7 +55,7 @@ const Products = () => {
                             <TableCell>56</TableCell>
                             <TableCell>$250.00</TableCell>
                             <TableCell>
-                                <Ellipsis/>
+                                <ProductActionsDropdown />
                             </TableCell>
                         </TableRow>
                     </TableBody>

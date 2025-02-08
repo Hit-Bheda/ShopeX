@@ -12,15 +12,17 @@ export type BasicProductCategoryDropdownProps = {
   onSelectCategory: (category: string) => void
   placeholder?: string
   className?: string
+  value?: string
 }
 
 export function ProductCategoryDropdown({
   onSelectCategory,
   placeholder = "Select category",
   className,
+  value
 }: BasicProductCategoryDropdownProps) {
   return (
-    <Select onValueChange={onSelectCategory}>
+    <Select value={value} onValueChange={onSelectCategory}>
       <SelectTrigger className={className}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>

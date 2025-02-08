@@ -1,0 +1,32 @@
+import axios from "axios"
+
+
+const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:4000"
+
+export const createCategory = async ({name,description}: {name: string, description?: string | ""},accessToken: string) => {
+    try {
+        await axios.post(`${BASE_URL}/api/v1/admin/create-category`,{
+            name,
+            description
+        },{
+            headers: {
+                Authorization: `${accessToken}`
+            }
+        })
+    } catch (error) {
+        console.error(String(error))
+    }
+}
+
+export const getCategories = async (accessToken: string) => {
+    try {
+        const res = await axios.post(`${BASE_URL}/api/v1/admin/get-categories`,null,{
+            headers: {
+                Authorization: `${accessToken}`
+            }
+        })
+        return res.data
+    } catch (error) {
+        console.error(error)
+    }
+}
