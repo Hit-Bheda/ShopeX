@@ -10,8 +10,6 @@ const AdminVerifier = async (
   next: NextFunction,
 ) => {
   try {
-    console.log(req.headers);
-    
     // Check If Reqest Hesder Exists Or Not If Exits Then Get It And Verify It If Not Then Throw Error
     if (!req.headers.authorization) throw new Error("Token Doesn't Exists");
     const accessToken = req.headers.authorization;

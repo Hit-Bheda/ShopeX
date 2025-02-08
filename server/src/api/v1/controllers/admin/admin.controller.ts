@@ -20,3 +20,13 @@ export const getCategories = async ( req: Request, res: Response ) => {
     .status(200)
     .json(data)
 }
+
+export const deleteCategory = async ( req: Request, res: Response) => {
+    const id = req.params.id
+
+    const data = await CategoryModel.findOneAndDelete({_id: id})
+
+    res
+    .status(200)
+    .json({message: "Item Deleted Successfully!",data})
+}

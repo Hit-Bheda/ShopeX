@@ -13,10 +13,10 @@ import AddCategoryDialog from "./AddCategoryDialog";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/AuthStore";
 import { getCategories } from "@/api/actions";
-import ProductActionsDropdown from "./ProductActions.Dropdown";
+import CategoryActionsDropdown from "./CategoryActionsDropdown";
 
 interface ResponseType {
-    id: string,
+    _id: string,
     name: string,
     description: string | null
 }
@@ -66,7 +66,7 @@ const Categories = () => {
                                     <TableCell>{category.name}</TableCell>
                                     <TableCell>{category.description}</TableCell>
                                     <TableCell>
-                                        <ProductActionsDropdown />
+                                        <CategoryActionsDropdown id={category._id} accessToken={accessToken} initFunction={initCategories} />
                                     </TableCell>
                                 </TableRow>
                             ))
