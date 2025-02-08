@@ -25,12 +25,12 @@ const Categories = () => {
     const accessToken = useAuthStore((state) => state.accessToken);
     const [data, setData] = useState<ResponseType[]>([]);
 
+    const initCategories = async (accessToken: string | null) => {
+        if (!accessToken) return;
+        const categories = await getCategories(accessToken);
+        setData(categories); 
+    };
     useEffect(() => {
-        const initCategories = async (accessToken: string | null) => {
-            if (!accessToken) return;
-            const categories = await getCategories(accessToken);
-            setData(categories); 
-        };
         initCategories(accessToken);
     }, [accessToken]);
 
@@ -41,7 +41,7 @@ const Categories = () => {
                     <h1 className="text-[1.5rem] font-bold">Categories</h1>
                     <p className="text-[.9rem] font-light">Manage Your Categories!</p>
                 </div>
-                <AddCategoryDialog>
+                <AddCategoryDialog initFunction={initCategories}>
                     <Button className="flex items-center justify-between">
                         <Plus />
                         Add Category

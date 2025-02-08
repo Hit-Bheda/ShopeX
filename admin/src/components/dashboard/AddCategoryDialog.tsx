@@ -16,10 +16,11 @@ const formSchema = z.object({
 });
 
 interface Props {
-  children: React.ReactNode;
+  children: React.ReactNode,
+  initFunction: (accessToken: string) => void
 }
 
-const AddCategoryDialog: React.FC<Props> = ({ children }) => {
+const AddCategoryDialog: React.FC<Props> = ({ children, initFunction }) => {
     const accessToken = useAuthStore((state) => state.accessToken)
     const [open, setOpen] = useState(false)
     const [isPending, setIsPending] = useState<boolean>(false)
@@ -36,6 +37,7 @@ const AddCategoryDialog: React.FC<Props> = ({ children }) => {
     if(!accessToken) return
     await createCategory(data,accessToken)
     setIsPending(false)
+    initFunction(accessToken)
     setOpen(false)
   };
 
