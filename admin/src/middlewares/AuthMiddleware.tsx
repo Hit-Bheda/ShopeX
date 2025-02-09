@@ -1,5 +1,5 @@
 import { Navigate } from "react-router";
-import { useEffect } from "react";
+import {  useLayoutEffect } from "react";
 import { useAuthStore } from "../store/AuthStore";
 import { getToken , verifyAuth } from "@/api/auth";
 import Loading from "@/components/Loading";
@@ -17,10 +17,9 @@ const AuthMiddleware: React.FC<Props> = ({ children, isPrivate = false }) => {
     const setIsAuth = useAuthStore((state) => state.setIsAuth)
     const loading = useAuthStore((state) => state.isLoading)
     const setLoading = useAuthStore((state) => state.setIsLoading)
-    const setUser = useAuthStore((state) => state.setUser)
 
 
-    useEffect(() => {
+    useLayoutEffect(() => {
 
         const checkAuthentication = async () => {
             setLoading(true)
@@ -33,9 +32,8 @@ const AuthMiddleware: React.FC<Props> = ({ children, isPrivate = false }) => {
 
                 if(!authenticated)return setAccessToken(null)
                     
-                const tokenData = await getToken();
-                if(tokenData?.accessToken) setAccessToken(tokenData?.accessToken ? String(tokenData.accessToken) : null)
-                if(tokenData?.user) setUser(tokenData.user)
+                const accessToken = await getToken();
+                if(accessToken) setAccessToken(accessToken ? String(accessToken) : null)
             } catch (error) {
                 console.log("Auth Initialization Failed! ",error);
                 setIsAuth(false)
@@ -46,7 +44,7 @@ const AuthMiddleware: React.FC<Props> = ({ children, isPrivate = false }) => {
         }
 
         checkAuthentication()
-    }, [ setAccessToken, setIsAuth, setLoading, setUser]);
+    }, [ setAccessToken, setIsAuth, setLoading ]);
 
     if (loading) return <Loading />; // Prevent premature redirects
 

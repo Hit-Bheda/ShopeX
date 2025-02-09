@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/AuthStore";
 import { getCategories } from "@/api/actions";
 import CategoryActionsDropdown from "./CategoryActionsDropdown";
+import { CategoryTableSkeleton } from "../Skeletons";
 
 interface ResponseType {
     _id: string,
@@ -71,11 +72,7 @@ const Categories = () => {
                                 </TableRow>
                             ))
                         ) : (
-                            <TableRow>
-                                <TableCell colSpan={2} className="text-center">
-                                    No categories available.
-                                </TableCell>
-                            </TableRow>
+                            <CategoryTableSkeleton />
                         )}
                     </TableBody>
                 </Table>

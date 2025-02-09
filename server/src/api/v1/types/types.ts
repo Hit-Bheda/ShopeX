@@ -1,5 +1,6 @@
-import { RequestHandler, Response } from "express";
+import { RequestHandler, Response, Request } from "express";
 import { JwtPayload } from "jsonwebtoken";
+import { userSchema } from "../models/user.model";
 
 export interface loginHandler {}
 export interface Route {
@@ -35,4 +36,8 @@ export interface PayloadType {
 
 export type decodeType = {
   id: string
+}
+
+export interface AuthenticateRequest extends Request {
+  user?: userSchema
 }

@@ -8,6 +8,7 @@ import {
   import { Ellipsis, Folder, Trash2 } from "lucide-react";
   import { Button } from "../ui/button";
 import { deleteCategory } from "@/api/actions";
+import { useToast } from "@/hooks/use-toast";
   
   interface Props {
     id: string,
@@ -16,19 +17,22 @@ import { deleteCategory } from "@/api/actions";
   }
   
   const CategoryActionsDropdown: React.FC<Props> = ({ id, accessToken, initFunction }) => {
-    const handleSubmit = () => {
-      console.log("hi",id);
-    }
+    const { toast } = useToast()
   
     const handleDelete = async() => {
         console.log("hello");
         
         if(!accessToken) return
-        const data = await deleteCategory(id,accessToken)
-
+        await deleteCategory(id,accessToken)
         await initFunction(accessToken)
-        console.log("done", data);
-        
+        toast({
+          title: "✔ Success!",
+          description: "Category Deleted Successfully!"
+        })
+    }
+
+    const handleUpdate = () => {
+      console.log("TODO: Comlete This Feature!")
     }
     
     return (
@@ -39,7 +43,7 @@ import { deleteCategory } from "@/api/actions";
             </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48 rounded-lg">
-          <DropdownMenuItem onClick={handleSubmit}>
+          <DropdownMenuItem onClick={handleUpdate}>
             <Folder className="text-muted-foreground" />
             <span>Edit</span>
           </DropdownMenuItem>

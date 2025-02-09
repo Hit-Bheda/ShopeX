@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { CategoryModel } from "../../models/category.model"
 import { ProductModel } from "../../models/product.model"
+import { AuthenticateRequest } from "../../types/types"
 
 export const createCategory = async ( req: Request, res: Response ) => {
     const { name, description } = req.body
@@ -29,4 +30,12 @@ export const deleteCategory = async ( req: Request, res: Response) => {
     res
     .status(200)
     .json({message: "Item Deleted Successfully!",data})
+}
+
+export const getUser = async ( req: AuthenticateRequest, res: Response ) => {
+    const user = req.user
+
+    res
+    .status(200)
+    .json({user})
 }

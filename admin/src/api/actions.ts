@@ -43,3 +43,18 @@ export const deleteCategory = async (id: string,accessToken: string) => {
         console.error(error)
     }
 }
+
+export const getUser = async (accessToken: string) => {
+    try {
+        const res = await axios.post(`${BASE_URL}/api/v1/admin/get-user`, null, {
+            headers: {
+                Authorization: accessToken
+            }
+        })
+
+        return res.data
+    } catch (error) {
+        console.error(error);
+        
+    }
+}

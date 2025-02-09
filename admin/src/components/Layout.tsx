@@ -1,5 +1,6 @@
 import { Outlet } from "react-router"
 import { ThemeProvider } from "./ThemeProvider"
+import { Toaster } from "./ui/toaster"
 
 const Layout = () => {
     return(
@@ -8,7 +9,7 @@ const Layout = () => {
             storageKey="vite-ui-theme">
 
             <Outlet />
-            
+            <Toaster />
         </ThemeProvider>
     )
 }

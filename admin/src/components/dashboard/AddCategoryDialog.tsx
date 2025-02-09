@@ -9,6 +9,7 @@ import * as z from "zod";
 import { createCategory } from "@/api/actions";
 import { useAuthStore } from "@/store/AuthStore";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(1, "Product name is required"),
@@ -24,6 +25,7 @@ const AddCategoryDialog: React.FC<Props> = ({ children, initFunction }) => {
     const accessToken = useAuthStore((state) => state.accessToken)
     const [open, setOpen] = useState(false)
     const [isPending, setIsPending] = useState<boolean>(false)
+    const { toast } = useToast()
     const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,8 +39,12 @@ const AddCategoryDialog: React.FC<Props> = ({ children, initFunction }) => {
     if(!accessToken) return
     await createCategory(data,accessToken)
     setIsPending(false)
-    initFunction(accessToken)
+    await initFunction(accessToken)
     setOpen(false)
+    toast({
+      title: "✅ Success!",
+      description: "Category Added Successfully!"
+    })
   };
 
   return (

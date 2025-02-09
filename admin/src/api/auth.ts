@@ -1,12 +1,10 @@
 import * as z from "zod";
 import { LoginSchema } from "@/schemas";
 import axios from "axios";
-import { userType } from "@/store/AuthStore";
 
 export type ResType = {
     data:{
         accessToken: string,
-        user: userType
     }
 }
 
@@ -14,7 +12,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:4000"
 export const getToken = async () => {
     try{
         const response: ResType = await axios.post(`${BASE_URL}/api/v1/admin/auth/access-token`,null,{withCredentials:true})
-        return response.data
+        return response.data.accessToken
     }catch(error){
         console.error(error)
     }

@@ -3,9 +3,10 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../../../configs/config";
 import { UserModel } from "../models/user.model";
 import { getErrorMessage } from "../../../utils/get-error-message.util";
+import { AuthenticateRequest } from "../types/types";
 
 const AdminVerifier = async (
-  req: Request,
+  req: AuthenticateRequest,
   res: Response,
   next: NextFunction,
 ) => {
@@ -37,6 +38,7 @@ const AdminVerifier = async (
     if(data?.role != "admin") throw new Error("Unauthorized User!") 
 
     // If Evrything Is Alright Then Let User Access The API
+    req.user = data
     next();
   } catch (error) {
     res.status(500).send(getErrorMessage(error));

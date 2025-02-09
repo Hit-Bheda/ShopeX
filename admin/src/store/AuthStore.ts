@@ -15,8 +15,6 @@ type Store = {
     setIsAuth: (auth: boolean) => void;
     isLoading: boolean;
     setIsLoading: (status: boolean) => void;
-    user: userType | null;
-    setUser: (data: userType | null) => void;
 };
 
 export const useAuthStore = create<Store>((set) => ({
@@ -27,14 +25,5 @@ export const useAuthStore = create<Store>((set) => ({
     setIsAuth: (auth) => set(() => ({ isAuth: auth })),
 
     isLoading: true,
-    setIsLoading: (status) => {
-        if(status === false){
-            setTimeout(() => set(() => ({ isLoading: false })), 500)
-        }else{
-            set({ isLoading: true })
-        }
-    },
-
-    user: null,
-    setUser: (data) => set(() => ({ user: data })),
+    setIsLoading: (status) => set({isLoading: status})
 }));
