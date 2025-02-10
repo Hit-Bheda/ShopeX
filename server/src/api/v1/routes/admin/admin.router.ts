@@ -1,8 +1,9 @@
 import { Router, Request, Response, RequestHandler } from "express";
 import { Route } from "../../../../types/types";
 import TryCatch from "../../../../utils/try-catch.util";
-import { createCategory, deleteCategory, getCategories, getUser } from "../../controllers/admin/admin.controller";
+import { createCategory, deleteCategory, getCategories, getUser, uploadFile } from "../../controllers/admin/admin.controller";
 import AdminVerifier from "../../middlewares/admin-verifier.middleware";
+import { upload } from "../../middlewares/multer.middleware";
 
 const AdminRouter = Router();
 
@@ -23,15 +24,19 @@ const privateRoutes: Route[] = [
     path: "/get-user",
     method: "post",
     handler: getUser
+  },{
+    path: "/image/upload",
+    method: "post",
+    handler: uploadFile
   }
 ];
 
 privateRoutes.forEach((route) => {
   const method = route.method;
   const handler = route.handler as RequestHandler;
-  AdminRouter[method](route.path, AdminVerifier, TryCatch(handler));
+  AdminRouter[method](route.path, route.path == "/image/upload" ? [AdminVerifier, upload.single("image")] : AdminVerifier, TryCatch(handler));
 });
 
+// AdminRouter.post("/image/upload",[AdminVerifier, upload.single("image")], uploadFile)
+
 export default AdminRouter;
-
-

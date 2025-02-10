@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { CategoryModel } from "../../models/category.model"
 import { ProductModel } from "../../models/product.model"
 import { AuthenticateRequest } from "../../types/types"
+import { uploadOnCloudinary } from "../../utils/cloudinary.util"
 
 export const createCategory = async ( req: Request, res: Response ) => {
     const { name, description } = req.body
@@ -38,4 +39,10 @@ export const getUser = async ( req: AuthenticateRequest, res: Response ) => {
     res
     .status(200)
     .json({user})
+}
+
+export const uploadFile = async (req: Request, res: Response) => {
+    if(!req.file?.destination ) throw new Error("File Not Found!")
+    const url = await uploadOnCloudinary(req.file?.path);
+    res.status(200).json({message: "File Uploaded Successfully!",url})
 }
