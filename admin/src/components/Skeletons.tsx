@@ -1,5 +1,6 @@
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Skeleton } from "@/components/ui/skeleton";
-import { TableCell, TableRow } from "./ui/table";
 
 export function UserSkeleton() {
   return (
@@ -39,3 +40,52 @@ const SingleRow = () => {
     </TableRow>
   );
 };
+
+
+export function LoadingSkeleton() {
+  return (
+    <Card className="border-0 bg-background">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-[150px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
+        <Skeleton className="h-10 w-[140px]" />
+      </CardHeader>
+      <CardContent>
+        <div className="mb-6">
+          <Skeleton className="h-10 max-w-sm" />
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>
+                <Skeleton className="h-4 w-[100px]" />
+              </TableHead>
+              <TableHead>
+                <Skeleton className="h-4 w-[150px]" />
+              </TableHead>
+              <TableHead className="w-[50px]" />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Skeleton className="h-4 w-[120px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[250px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-8 w-8 rounded-full" />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  )
+}
+

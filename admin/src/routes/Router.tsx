@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import Layout from "../components/Layout";
 import Login from "../pages/Login";
 import AuthMiddleware from "../middlewares/AuthMiddleware";
@@ -10,7 +10,8 @@ import Overview from "@/components/dashboard/Overview";
 import Categories from "@/components/dashboard/Categories";
 import Products from "@/components/dashboard/Products";
 import Orders from "@/components/dashboard/Orders";
-import NotFound from "@/pages/NotFound"; // Create a separate NotFound page
+import NotFound from "@/pages/NotFound";
+import { LoadingSkeleton } from "@/components/Skeletons";
 
 const Router = () => {
     const myRoutes = useMemo(() => [
@@ -22,7 +23,7 @@ const Router = () => {
 
     const dashboardRoutes = useMemo(() => [
         { path: "", element: <Overview /> },
-        { path: "categories", element: <Categories /> },
+        { path: "categories", element: <Categories />, suspense: <LoadingSkeleton /> },
         { path: "products", element: <Products /> },
         { path: "orders", element: <Orders /> }
     ], []);
@@ -40,7 +41,17 @@ const Router = () => {
 
                 <Route path="/dashboard" element={<AuthMiddleware isPrivate={true}><Dashboard /></AuthMiddleware>}>
                     {dashboardRoutes.map((route, index) => (
-                        <Route key={index} path={route.path} element={route.element} />
+                        <Route 
+                            key={index} 
+                            path={route.path} 
+                            element={route.suspense ? (
+                                <Suspense fallback={route.suspense}>
+                                    {route.element}
+                                </Suspense>
+                            ) : (
+                                route.element
+                            )}
+                        />
                     ))}
                 </Route>
             </Route>
