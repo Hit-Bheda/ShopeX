@@ -58,3 +58,21 @@ export const getUser = async (accessToken: string) => {
         
     }
 }
+
+export const uploadSingleFile = async (accessToken: string,image: unknown) => {
+    console.log(image);
+    
+    try {
+        const res = await axios.post(`${BASE_URL}/api/v1/admin/image/upload`, {image,msg: "hello"}, {
+            headers: {
+                Authorization: accessToken,
+                "Content-Type": "multipart/form-data"
+            }
+        })
+
+        return res.data
+    } catch (error) {
+        console.error(error);
+        
+    }
+}

@@ -7,6 +7,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { ProductCategoryDropdown } from "./ProductCategoryDropdown";
+import React, { useState } from "react";
+import { uploadSingleFile } from "@/api/actions";
+import { useAuthStore } from "@/store/AuthStore";
 
 // Define available sizes array
 const sizes = ['S', 'M', 'L', 'XL'];
@@ -27,6 +30,9 @@ interface Props {
 }
 
 const AddProductDialog: React.FC<Props> = ({ children }) => {
+  const accessToken = useAuthStore((state) => state.accessToken)
+  const [images, setImages] = useState<string[] | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,6 +45,19 @@ const AddProductDialog: React.FC<Props> = ({ children }) => {
       sizes: [] as string[] // Fixed default value for array
     },
   });
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e.target.files && e.target.files.length > 0 && accessToken){
+      setLoading(true)
+      const file = e.target.files[0]
+      if(!file) console.log("File Not Found!");
+      
+      const data = await uploadSingleFile(accessToken,file)
+      setImages((prevImages) => prevImages ? [...prevImages, data.url] : [data.url]);
+      console.log("File Uploaded Successfully! ",images);
+      setLoading(false)
+    }
+  }
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log(data);
@@ -55,18 +74,21 @@ const AddProductDialog: React.FC<Props> = ({ children }) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex">
-            <div className="w-1/2 p-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex justify-between items-center gap-4">
+            <div className="w-1/2 drag-drop gap-2 flex flex-col">
             <FormField
               control={form.control}
               name="image"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Upload Image</FormLabel>
                   <FormControl>
                     <Input 
-                      type="file" 
-                      onChange={(e) => field.onChange(e.target.files?.[0]?.name || '')}
+                      type="file"
+                      accept=".png, .jpeg, .jpg"
+                      multiple
+                      onChange={handleFileChange}
+                      disabled={loading}
                       className="cursor-pointer" 
                     />
                   </FormControl>
@@ -74,6 +96,14 @@ const AddProductDialog: React.FC<Props> = ({ children }) => {
                 </FormItem>
               )}
             />
+            <div className={ images ? "flex gap-4 items-start" : "hidden"}>
+              {/* <img src={images && images.length > 0 ? images[0] : "" } alt="" /> */}
+              {images?.map((image, index) => (
+  <img key={index} src={image} alt={`Image ${index + 1}`} className="w-[100px] h-auto object-contain cursor-pointer bg-zinc-900 rounded p-1" />
+))}
+
+              {/* <img src="http://res.cloudinary.com/dfbxbcusl/image/upload/v1739375765/uploads/d1wajxtjxjccoxlhs0bn.png" alt="" /> */}
+            </div>
             </div>
             <div className="w-1/2 ">
             
