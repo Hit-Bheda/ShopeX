@@ -47,7 +47,7 @@ const AddProductDialog: React.FC<Props> = ({ children }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] max-h-[100vh]">
+      <DialogContent className="sm:max-w-[800px] max-h-[100vh]">
         <DialogHeader>
           <DialogTitle>Add Product</DialogTitle>
           <DialogDescription>
@@ -55,7 +55,8 @@ const AddProductDialog: React.FC<Props> = ({ children }) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 py-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex">
+            <div className="w-1/2 p-4">
             <FormField
               control={form.control}
               name="image"
@@ -73,6 +74,9 @@ const AddProductDialog: React.FC<Props> = ({ children }) => {
                 </FormItem>
               )}
             />
+            </div>
+            <div className="w-1/2 ">
+            
             <div className="flex justify-between gap-2">
               <FormField
                 control={form.control}
@@ -185,6 +189,7 @@ const AddProductDialog: React.FC<Props> = ({ children }) => {
             <DialogFooter>
               <Button type="submit">Save changes</Button>
             </DialogFooter>
+            </div>
           </form>
         </Form>
       </DialogContent>

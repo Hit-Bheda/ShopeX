@@ -13,10 +13,10 @@ import { useToast } from "@/hooks/use-toast";
   interface Props {
     id: string,
     accessToken: string | null,
-    initFunction: (accessToken: string) => void
+    getCategories: (accessToken: string) => void
   }
   
-  const CategoryActionsDropdown: React.FC<Props> = ({ id, accessToken, initFunction }) => {
+  const CategoryActionsDropdown: React.FC<Props> = ({ id, accessToken, getCategories }) => {
     const { toast } = useToast()
   
     const handleDelete = async() => {
@@ -24,7 +24,7 @@ import { useToast } from "@/hooks/use-toast";
         
         if(!accessToken) return
         await deleteCategory(id,accessToken)
-        await initFunction(accessToken)
+        await getCategories(accessToken)
         toast({
           title: "✔ Success!",
           description: "Category Deleted Successfully!"
