@@ -1,7 +1,7 @@
 import { Router, Request, Response, RequestHandler } from "express";
 import { Route } from "../../../../types/types";
 import TryCatch from "../../../../utils/try-catch.util";
-import { createCategory, deleteCategory, getCategories, getUser, uploadFile } from "../../controllers/admin/admin.controller";
+import { createCategory, createProduct, deleteCategory, getCategories, getUser, uploadFile } from "../../controllers/admin/admin.controller";
 import AdminVerifier from "../../middlewares/admin-verifier.middleware";
 import { upload } from "../../middlewares/multer.middleware";
 
@@ -28,6 +28,10 @@ const privateRoutes: Route[] = [
     path: "/image/upload",
     method: "post",
     handler: uploadFile
+  },{
+    path: "/create-product",
+    method: "post",
+    handler: createProduct
   }
 ];
 

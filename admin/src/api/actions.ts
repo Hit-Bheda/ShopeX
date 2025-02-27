@@ -1,4 +1,6 @@
+import { ProductSchema } from "@/schemas"
 import axios from "axios"
+import { z } from "zod"
 
 
 const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:4000"
@@ -25,6 +27,8 @@ export const getCategories = async (accessToken: string) => {
                 Authorization: `${accessToken}`
             }
         })
+        console.log(res.data);
+        
         return res.data
     } catch (error) {
         console.error(error)
@@ -60,8 +64,6 @@ export const getUser = async (accessToken: string) => {
 }
 
 export const uploadSingleFile = async (accessToken: string,image: unknown) => {
-    console.log(image);
-    
     try {
         const res = await axios.post(`${BASE_URL}/api/v1/admin/image/upload`, {image,msg: "hello"}, {
             headers: {
@@ -74,5 +76,17 @@ export const uploadSingleFile = async (accessToken: string,image: unknown) => {
     } catch (error) {
         console.error(error);
         
+    }
+}
+
+export const createProduct = async (data: z.infer<typeof ProductSchema>, accessToken: string) => {
+    try{
+        await axios.post(`${BASE_URL}/api/v1/admin/create-product`,data,{
+            headers:{
+                Authorization: accessToken
+            }
+        })
+    } catch(error){
+        console.error(error)
     }
 }

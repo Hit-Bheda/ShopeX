@@ -46,3 +46,11 @@ export const uploadFile = async (req: Request, res: Response) => {
     const url = await uploadOnCloudinary(req.file?.path);
     res.status(200).json({message: "File Uploaded Successfully!",url})
 }
+
+export const createProduct = async ( req: Request, res: Response ) => {
+    const { images, name, category,description,quantity,price,sizes} = req.body
+    const data = await ProductModel.create({images,name,category,description,quantity,price,sizes})
+    res
+    .status(200)
+    .json({message: "Product Cretated Successfully!",data})
+}

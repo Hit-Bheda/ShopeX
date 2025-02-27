@@ -16,3 +16,13 @@ export const LoginSchema = z.object({
         message: "Please Provide Atleast 6 Letters"
     })
 })
+
+export const ProductSchema = z.object({
+  image: z.array(z.string()).min(2, "Image Is Required!"),
+  name: z.string().min(1, "Product name is required"),
+  category: z.string().min(1, "Category is required"),
+  description: z.string().optional(),
+  quantity: z.coerce.number().min(1, "Quantity must be at least 1"),
+  price: z.coerce.number().min(0.01, "Price must be at least 0.01"),
+  sizes: z.array(z.string()).min(1, "Please Select Available Sizes!")
+});
