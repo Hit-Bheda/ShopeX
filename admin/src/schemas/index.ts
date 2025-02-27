@@ -1,28 +1,27 @@
-import * as z from "zod"
+import * as z from "zod";
 
 export const LoginSchema = z.object({
-    email: z
+  email: z
     .string()
-    .min(1,{
-        message: "Please Provide An Email Address!"
+    .min(1, {
+      message: "Please Provide An Email Address!",
     })
     .email({
-        message: "Please Provide Valid Email Address!"
+      message: "Please Provide Valid Email Address!",
     }),
-    
-    password: z
-    .string()
-    .min(6,{
-        message: "Please Provide Atleast 6 Letters"
-    })
-})
+
+  password: z.string().min(6, {
+    message: "Please Provide Atleast 6 Letters",
+  }),
+});
 
 export const ProductSchema = z.object({
-  image: z.array(z.string()).min(2, "Image Is Required!"),
+  images: z.array(z.string().min(1, "Image Is Required!")),
   name: z.string().min(1, "Product name is required"),
   category: z.string().min(1, "Category is required"),
   description: z.string().optional(),
   quantity: z.coerce.number().min(1, "Quantity must be at least 1"),
   price: z.coerce.number().min(0.01, "Price must be at least 0.01"),
-  sizes: z.array(z.string()).min(1, "Please Select Available Sizes!")
+  sizes: z.array(z.string()).min(1, "Please Select Available Sizes!"),
 });
+
