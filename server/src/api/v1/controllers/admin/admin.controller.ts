@@ -55,18 +55,11 @@ export const createProduct = async (req: Request, res: Response) => {
 };
 
 export const getProduct = async (req: Request, res: Response) => {
-  const products = await ProductModel.find()
+  let products = await ProductModel.find()
     .populate({
       path: "category",
       select: "name -_id", // Only select 'name' and exclude '_id'
     })
     .lean(); // Convert to plain JavaScript object
-
-  const formattedProducts = products.map((product) => ({
-    ...product,
-    category: product.category?.name || "Unknown", // Ensure category is a string
-  }));
-
-  res.status(200).json(formattedProducts);
+  res.status(200).json(products);
 };
-

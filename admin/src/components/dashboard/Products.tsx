@@ -13,12 +13,12 @@ import { Input } from "../ui/input";
 import AddProductDialog from "./AddProductDialog";
 import ProductActionsDropdown from "./ProductActions.Dropdown";
 import { useEffect, useState } from "react";
-import { ProductSchema } from "@/schemas";
+import { ProductResponseSchema } from "@/schemas";
 import { z } from "zod";
 import { getProducts } from "@/api/actions";
 import { useAuthStore } from "@/store/AuthStore";
 
-type ProductType = z.infer<typeof ProductSchema>;
+type ProductType = z.infer<typeof ProductResponseSchema>;
 
 const Products = () => {
   const accessToken = useAuthStore((state) => state.accessToken);
@@ -60,8 +60,7 @@ const Products = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[120px]">Images</TableHead>
-              <TableHead>Name</TableHead>
+              <TableHead className="w-[120px]">Name</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Description</TableHead>
               <TableHead>Sizes</TableHead>
@@ -75,26 +74,9 @@ const Products = () => {
               products.map((product, index) => (
                 <TableRow key={index}>
                   {/* Images - Show up to 3 */}
-                  <TableCell>
-                    <div className="flex gap-1">
-                      {product.images.slice(0, 3).map((img, i) => (
-                        <img
-                          key={i}
-                          src={img}
-                          alt="Product"
-                          className="w-12 h-12 object-cover rounded-md"
-                        />
-                      ))}
-                      {product.images.length > 3 && (
-                        <span className="text-xs text-gray-500">
-                          +{product.images.length - 3} more
-                        </span>
-                      )}
-                    </div>
-                  </TableCell>
 
                   <TableCell className="font-medium">{product.name}</TableCell>
-                  <TableCell>{product.category}</TableCell>
+                  <TableCell>{product.category.name}</TableCell>
                   <TableCell className="truncate max-w-[200px]">
                     {product.description || "No description"}
                   </TableCell>
