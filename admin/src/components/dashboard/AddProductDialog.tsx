@@ -22,19 +22,21 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { ProductCategoryDropdown } from "./ProductCategoryDropdown";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createProduct, uploadSingleFile } from "@/api/actions";
 import { useAuthStore } from "@/store/AuthStore";
 import { ProductSchema } from "@/schemas";
+import { toast } from "@/hooks/use-toast";
 
 // Define available sizes array
 const sizes = ["S", "M", "L", "XL"];
 
 interface Props {
-  children: React.ReactNode;
+  children: React.ReactNode,
+  initFunction: (accessToken: string) => void
 }
 
-const AddProductDialog: React.FC<Props> = ({ children }) => {
+const AddProductDialog: React.FC<Props> = ({ children, initFunction }) => {
   const accessToken = useAuthStore((state) => state.accessToken);
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -82,10 +84,19 @@ const AddProductDialog: React.FC<Props> = ({ children }) => {
 
   const onSubmit = async (data: z.infer<typeof ProductSchema>) => {
     if (!accessToken) return;
-    console.log({ ...data, images });
+    console.log(data);
     await createProduct(data, accessToken);
     setOpen(false);
+    await initFunction(accessToken)
+    toast({
+      title: "✅ Success!",
+      description: "Product Added Successfully!",
+    });
   };
+
+  useEffect(() => {
+    form.setValue("images", images);
+  }, [images]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

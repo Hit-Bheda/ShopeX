@@ -1,20 +1,30 @@
 import { Request, Response } from "express";
 import { ProductModel } from "../models/product.model";
+import { CategoryModel } from "../models/category.model";
 
-export const sendProducts = async ( req: Request, res: Response) => {
-  const products = await ProductModel.find()
+export const sendProducts = async (req: Request, res: Response) => {
+  const category = req.query.category;
+  const limit = Number(req.query.limit) || 6;
 
-  if(!products) return new Error("No Products Found!")
+  const categoryData = await CategoryModel.findOne({ name: category });
+  if (!categoryData) throw new Error("Category Not Found!");
 
-  res.status(200).json({products})
-}
+  const products = await ProductModel.find({
+    category: categoryData._id,
+  }).limit(limit);
 
-export const sendSingleProduct = async ( req: Request, res: Response ) => {
-  const { id } = req.params
+  if (!products) return new Error("No Products Found!");
 
-  const product = await ProductModel.findOne({id})
+  res.status(200).json({ products });
+};
 
-  if(!product) return new Error("Product Not Found!")
+export const sendSingleProduct = async (req: Request, res: Response) => {
+  const { id } = req.params;
 
-  res.status(200).json({product})
-}
+  const product = await ProductModel.findOne({ id });
+
+  if (!product) return new Error("Product Not Found!");
+
+  res.status(200).json({ product });
+};
+

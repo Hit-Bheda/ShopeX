@@ -5,6 +5,7 @@ import {
   createCategory,
   createProduct,
   deleteCategory,
+  deleteProduct,
   getCategories,
   getProduct,
   getUser,
@@ -30,6 +31,11 @@ const privateRoutes: Route[] = [
     path: "/delete-category/:id",
     method: "post",
     handler: deleteCategory,
+  },
+  {
+    path: "/delete-product/:id",
+    method: "post",
+    handler: deleteProduct,
   },
   {
     path: "/get-user",
@@ -68,4 +74,3 @@ privateRoutes.forEach((route) => {
 // AdminRouter.post("/image/upload",[AdminVerifier, upload.single("image")], uploadFile)
 
 export default AdminRouter;
-

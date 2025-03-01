@@ -127,3 +127,19 @@ export const getProducts = async (accessToken: string) => {
   }
 };
 
+export const deleteProduct = async (id: string, accessToken: string) => {
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/api/v1/admin/delete-product/${id}`,
+      null,
+      {
+        headers: {
+          Authorization: `${accessToken}`,
+        },
+      },
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};

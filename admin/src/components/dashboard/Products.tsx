@@ -24,13 +24,14 @@ const Products = () => {
   const accessToken = useAuthStore((state) => state.accessToken);
   const [products, setProducts] = useState<ProductType[]>([]);
 
+  const initProducts = async () => {
+    if (!accessToken) return;
+    const data: ProductType[] = await getProducts(accessToken);
+    console.log("data", data);
+    setProducts(data);
+  };
+
   useEffect(() => {
-    const initProducts = async () => {
-      if (!accessToken) return;
-      const data: ProductType[] = await getProducts(accessToken);
-      console.log("data", data);
-      setProducts(data);
-    };
     initProducts();
   }, [accessToken]);
 
@@ -42,7 +43,7 @@ const Products = () => {
           <h1 className="text-2xl font-bold">Products</h1>
           <p className="text-sm text-gray-600">Manage Your Products!</p>
         </div>
-        <AddProductDialog>
+        <AddProductDialog initFunction={initProducts}>
           <Button className="flex items-center gap-2">
             <Plus size={18} />
             Add Product
@@ -84,7 +85,11 @@ const Products = () => {
                   <TableCell>{product.quantity}</TableCell>
                   <TableCell>${product.price.toFixed(2)}</TableCell>
                   <TableCell>
-                    <ProductActionsDropdown />
+                    <ProductActionsDropdown
+                      id={product._id}
+                      accessToken={accessToken}
+                      initFunction={initProducts}
+                    />
                   </TableCell>
                 </TableRow>
               ))

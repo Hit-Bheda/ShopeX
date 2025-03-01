@@ -40,6 +40,7 @@ export const uploadFile = async (req: Request, res: Response) => {
 };
 
 export const createProduct = async (req: Request, res: Response) => {
+  console.log(req.body);
   const { images, name, category, description, quantity, price, sizes } =
     req.body;
   const data = await ProductModel.create({
@@ -62,4 +63,12 @@ export const getProduct = async (req: Request, res: Response) => {
     })
     .lean(); // Convert to plain JavaScript object
   res.status(200).json(products);
+};
+
+export const deleteProduct = async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const data = await ProductModel.findOneAndDelete({ _id: id });
+
+  res.status(200).json({ message: "Item Deleted Successfully!", data });
 };
