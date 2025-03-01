@@ -1,16 +1,20 @@
-import { getModelForClass, modelOptions, prop, Ref } from "@typegoose/typegoose";
-import { Product } from "./product.model";
-
+import {
+  getModelForClass,
+  modelOptions,
+  prop,
+  Ref,
+} from "@typegoose/typegoose";
 
 @modelOptions({
-    options: { allowMixed: 0}
+  options: { allowMixed: 0 },
 })
-export class Category{
-    @prop({ required: true, unique: true })
-    public name!: string
+export class Category {
+  @prop({ required: true, unique: true })
+  public name!: string;
 
-    @prop()
-    public description!: string
+  @prop()
+  public description!: string;
 }
 
-export const CategoryModel = getModelForClass(Category)
+export const CategoryModel = getModelForClass(Category);
+
