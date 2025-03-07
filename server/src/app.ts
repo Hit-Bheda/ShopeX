@@ -13,21 +13,30 @@ app.use(morgan(morganFormate, morganData));
 app.use(express.json());
 app.use(
   cors({
-    origin: config.origin,
-    credentials: true
+    origin: (origin, callback) => {
+      if (!origin || config.origin.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
   }),
 );
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.header("Access-Control-Allow-Origin", config.origin);
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+  );
+
   // Handle preflight requests
   if (req.method === "OPTIONS") {
-      res.sendStatus(200);
+    res.sendStatus(200);
   }
-  
+
   next();
 });
 

@@ -32,8 +32,8 @@ import { toast } from "@/hooks/use-toast";
 const sizes = ["S", "M", "L", "XL"];
 
 interface Props {
-  children: React.ReactNode,
-  initFunction: (accessToken: string) => void
+  children: React.ReactNode;
+  initFunction: (accessToken: string) => void;
 }
 
 const AddProductDialog: React.FC<Props> = ({ children, initFunction }) => {
@@ -63,7 +63,7 @@ const AddProductDialog: React.FC<Props> = ({ children, initFunction }) => {
       }
 
       setLoading(true);
-      const file = e.target.files[0];
+      const file: File = e.target.files[0];
       if (!file) {
         console.log("File Not Found!");
         setLoading(false);
@@ -87,7 +87,7 @@ const AddProductDialog: React.FC<Props> = ({ children, initFunction }) => {
     console.log(data);
     await createProduct(data, accessToken);
     setOpen(false);
-    await initFunction(accessToken)
+    await initFunction(accessToken);
     toast({
       title: "✅ Success!",
       description: "Product Added Successfully!",

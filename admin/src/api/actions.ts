@@ -76,7 +76,7 @@ export const getUser = async (accessToken: string) => {
   }
 };
 
-export const uploadSingleFile = async (accessToken: string, image: unknown) => {
+export const uploadSingleFile = async (accessToken: string, image: File) => {
   try {
     const res = await axios.post(
       `${BASE_URL}/api/v1/admin/image/upload`,

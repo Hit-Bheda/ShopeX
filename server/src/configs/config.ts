@@ -7,7 +7,7 @@ type configType = {
   port: number;
   mongoURI: string;
   secret: string;
-  origin: string;
+  origin: string[] | string;
   cloudinaryCloudName: string;
   cloundinaryApiKey: string;
   cloudinaryApiSecret: string;
@@ -17,10 +17,10 @@ const config: configType = {
   port: parseInt(process.env.PORT || "5000"),
   mongoURI: process.env.MONGODB_URI || "",
   secret: process.env.SECRET || "",
-  origin: process.env.ORIGIN || "http://localhost:5173",
+  origin: process.env.ORIGIN?.split(",") || ["http://localhost:5173"],
   cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME || "",
   cloundinaryApiKey: process.env.CLOUDINARY_API_KEY || "",
-  cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET || ""
+  cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET || "",
 };
 
 if (!config.mongoURI) {
