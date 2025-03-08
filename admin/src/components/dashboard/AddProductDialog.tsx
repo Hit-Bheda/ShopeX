@@ -63,7 +63,7 @@ const AddProductDialog: React.FC<Props> = ({ children, initFunction }) => {
       }
 
       setLoading(true);
-      const file: File = e.target.files[0];
+      const file = e.target.files[0];
       if (!file) {
         console.log("File Not Found!");
         setLoading(false);
@@ -71,6 +71,14 @@ const AddProductDialog: React.FC<Props> = ({ children, initFunction }) => {
       }
 
       const data = await uploadSingleFile(accessToken, file);
+      if (!data) {
+        toast({
+          title: "❌ Error!",
+          description: "Failed To Upload Image!",
+        });
+        setLoading(false);
+        return;
+      }
       setImages((prevImages) => [...prevImages, data.url]);
       console.log("File Uploaded Successfully!", data.url);
       console.log(images);
@@ -139,22 +147,24 @@ const AddProductDialog: React.FC<Props> = ({ children, initFunction }) => {
                   images.length > 0 ? "flex gap-4 items-start" : "hidden"
                 }
               >
-                {images.map((image, index) => (
-                  <div key={index} className="relative">
-                    <img
-                      src={image}
-                      alt={`Image ${index + 1}`}
-                      className="w-[100px] h-auto object-contain cursor-pointer bg-zinc-900 rounded p-1"
-                    />
-                    <button
-                      type="button"
-                      className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1 rounded-full"
-                      onClick={() => removeImage(index)}
-                    >
-                      X
-                    </button>
-                  </div>
-                ))}
+                {images
+                  ? images.map((image, index) => (
+                      <div key={index} className="relative">
+                        <img
+                          src={image}
+                          alt={`Image ${index + 1}`}
+                          className="w-[100px] h-auto object-contain cursor-pointer bg-zinc-900 rounded p-1"
+                        />
+                        <button
+                          type="button"
+                          className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1 rounded-full"
+                          onClick={() => removeImage(index)}
+                        >
+                          X
+                        </button>
+                      </div>
+                    ))
+                  : null}
               </div>
             </div>
             <div className="w-1/2">

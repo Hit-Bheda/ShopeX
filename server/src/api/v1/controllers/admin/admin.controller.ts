@@ -34,8 +34,8 @@ export const getUser = async (req: AuthenticateRequest, res: Response) => {
 };
 
 export const uploadFile = async (req: Request, res: Response) => {
-  if (!req.file?.destination) throw new Error("File Not Found!");
-  const url = await uploadOnCloudinary(req.file?.path);
+  if (!req.file) throw new Error("File Not Found!");
+  const url = await uploadOnCloudinary(req.file.buffer);
   res.status(200).json({ message: "File Uploaded Successfully!", url });
 };
 

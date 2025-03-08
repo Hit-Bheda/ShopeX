@@ -1,8 +1,8 @@
 import { v2 as cloudinary } from "cloudinary";
 import config from "../../../configs/config";
-import fs  from "fs"
+import streamifier from "streamifier";
 
-export const uploadOnCloudinary = async (filePath: string) => {
+export const uploadOnCloudinary = async (filerBuffer: Buffer) => {
   // Configuration
   cloudinary.config({
     cloud_name: config.cloudinaryCloudName,
@@ -11,15 +11,18 @@ export const uploadOnCloudinary = async (filePath: string) => {
   });
 
   try {
-    // Upload an image
-    const uploadResult = await cloudinary.uploader.upload(filePath, {
-      folder: "uploads",
+    return new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder: "uploads" },
+        (error, result) => {
+          if (error) reject(error);
+          resolve(result?.url);
+        },
+      );
+      streamifier.createReadStream(filerBuffer).pipe(uploadStream);
     });
-
-    return uploadResult?.url;
   } catch (error) {
     console.log(error);
-  } finally{
-    fs.unlinkSync(filePath)
+    throw new Error("Cloudinary Upload Failed!");
   }
 };

@@ -92,6 +92,7 @@ export const uploadSingleFile = async (accessToken: string, image: File) => {
     return res.data;
   } catch (error) {
     console.error(error);
+    return null;
   }
 };
 
