@@ -1,22 +1,23 @@
-import * as React from "react"
+import * as React from "react";
 import {
   Box,
   GalleryVerticalEnd,
+  Home,
   PieChart,
   Shirt,
   TvMinimal,
-} from "lucide-react"
+} from "lucide-react";
 
-import { NavActions } from "@/components/NavActions"
-import { NavUser } from "@/components/NavUsers"
-import { ProjectSwitcher } from "@/components/ProjectSwitcher"
+import { NavActions } from "@/components/NavActions";
+import { NavUser } from "@/components/NavUsers";
+import { ProjectSwitcher } from "@/components/ProjectSwitcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 // This is sample data.
 const data = {
@@ -34,6 +35,11 @@ const data = {
       icon: TvMinimal,
     },
     {
+      name: "Home Page Editor",
+      url: "/homepage-editor",
+      icon: Home,
+    },
+    {
       name: "Categories",
       url: "/categories",
       icon: PieChart,
@@ -42,16 +48,16 @@ const data = {
       name: "Products",
       url: "/products",
       icon: Shirt,
-    },{
+    },
+    {
       name: "Orders",
       url: "/orders",
-      icon: Box 
-    }
+      icon: Box,
+    },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-    
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -65,5 +71,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
