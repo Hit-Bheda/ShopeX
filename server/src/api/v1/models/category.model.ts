@@ -1,9 +1,4 @@
-import {
-  getModelForClass,
-  modelOptions,
-  prop,
-  Ref,
-} from "@typegoose/typegoose";
+import { getModelForClass, modelOptions, prop } from "@typegoose/typegoose";
 
 @modelOptions({
   options: { allowMixed: 0 },
@@ -17,4 +12,3 @@ export class Category {
 }
 
 export const CategoryModel = getModelForClass(Category);
-

@@ -3,6 +3,7 @@ import { CategoryModel } from "../../models/category.model";
 import { ProductModel } from "../../models/product.model";
 import { AuthenticateRequest } from "../../types/types";
 import { uploadOnCloudinary } from "../../utils/cloudinary.util";
+import { LayoutModel } from "../../models/layout.model";
 
 export const createCategory = async (req: Request, res: Response) => {
   const { name, description } = req.body;
@@ -74,3 +75,12 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
   res.status(200).json({ message: "Item Deleted Successfully!", data });
 };
+
+export const setHomeProducts = async ( req: Request, res: Response ) => {
+  const { product1, product2 } = req.body
+  if(!product1 || !product2) throw new Error("Products Required!")
+
+  const data = await LayoutModel.create({ product1, product2 })
+
+  res.status(200).json({ message: "Product is setted successfully!", data})
+}

@@ -5,7 +5,6 @@ import {
   sendSingleProduct,
 } from "../controllers/products.controller";
 import TryCatch from "../../../utils/try-catch.util";
-import UserVerifier from "../middlewares/user-verifier.middleware";
 
 const ProductsRouter = Router();
 

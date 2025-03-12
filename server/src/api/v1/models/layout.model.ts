@@ -5,14 +5,15 @@ import {
   Prop,
 } from "@typegoose/typegoose";
 import { Category } from "./category.model";
+import { Product } from "./product.model";
 
 modelOptions({
   schemaOptions: { timestamps: true },
   options: { allowMixed: 0 },
 });
 export class Layout {
-  @Prop({ type: () => [String], required: true })
-  public heroProducts!: string[];
+  @Prop({ type: () => [Product], required: true })
+  public heroProducts!: Product[];
 
   @Prop({ ref: () => Category, required: true })
   public homeCategory!: Ref<Category>;

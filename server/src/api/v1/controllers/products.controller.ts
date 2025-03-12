@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ProductModel } from "../models/product.model";
 import { CategoryModel } from "../models/category.model";
+import { LayoutModel } from "../models/layout.model";
 
 export const sendProducts = async (req: Request, res: Response) => {
   const category = req.query.category;
@@ -28,3 +29,7 @@ export const sendSingleProduct = async (req: Request, res: Response) => {
   res.status(200).json({ product });
 };
 
+export const getHomeProducts = async ( req: Request, res: Response ) => {
+  const data = await LayoutModel.findOne().sort({ timestamp: -1 })
+  res.status(200).json({data})
+}

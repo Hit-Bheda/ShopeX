@@ -9,6 +9,7 @@ import {
   getCategories,
   getProduct,
   getUser,
+  setHomeProducts,
   uploadFile,
 } from "../../controllers/admin/admin.controller";
 import AdminVerifier from "../../middlewares/admin-verifier.middleware";
@@ -56,7 +57,11 @@ const privateRoutes: Route[] = [
     path: "/get-products",
     method: "post",
     handler: getProduct,
-  },
+  },{
+    path: "/set-home-product",
+    method: "post",
+    handler: setHomeProducts
+  }
 ];
 
 privateRoutes.forEach((route) => {
