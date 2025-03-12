@@ -37,3 +37,5 @@ export const ProductResponseSchema = z.object({
   price: z.coerce.number().min(0.01, "Price must be at least 0.01"),
   sizes: z.array(z.string()).min(1, "Please Select Available Sizes!"),
 });
+
+// export const HomeProductSchema = z.object
