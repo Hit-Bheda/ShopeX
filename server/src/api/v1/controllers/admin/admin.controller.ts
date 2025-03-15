@@ -73,6 +73,11 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
   const data = await ProductModel.findOneAndDelete({ _id: id });
 
+  await LayoutModel.updateMany(
+    { heroProducts: id },
+    { $pull: { heroProducts: id } },
+  );
+
   res.status(200).json({ message: "Item Deleted Successfully!", data });
 };
 
