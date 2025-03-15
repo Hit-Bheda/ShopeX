@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { Input } from "../ui/input";
 import AddProductDialog from "./AddProductDialog";
 import ProductActionsDropdown from "./ProductActions.Dropdown";
@@ -17,23 +16,42 @@ import { ProductResponseSchema } from "@/schemas";
 import { z } from "zod";
 import { getProducts } from "@/api/actions";
 import { useAuthStore } from "@/store/AuthStore";
+import { TableSkeleton } from "../Skeletons";
 
 type ProductType = z.infer<typeof ProductResponseSchema>;
 
 const Products = () => {
   const accessToken = useAuthStore((state) => state.accessToken);
-  const [products, setProducts] = useState<ProductType[]>([]);
+  const [products, setProducts] = useState<ProductType[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const initProducts = async () => {
     if (!accessToken) return;
-    const data: ProductType[] = await getProducts(accessToken);
-    console.log("data", data);
-    setProducts(data);
+
+    setIsLoading(true);
+    try {
+      const data: ProductType[] = await getProducts(accessToken);
+      setProducts(data);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+      setProducts([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     initProducts();
   }, [accessToken]);
+
+  // Filter products based on search query
+  const filteredProducts = products?.filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.category.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   return (
     <div className="p-2 w-full h-full border-none space-y-5">
@@ -53,7 +71,12 @@ const Products = () => {
 
       {/* Search Input */}
       <div>
-        <Input type="text" placeholder="Search....." />
+        <Input
+          type="text"
+          placeholder="Search by name, category or description..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
       </div>
 
       {/* Products Table */}
@@ -71,11 +94,11 @@ const Products = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {products.length > 0 ? (
-              products.map((product, index) => (
+            {isLoading ? (
+              <TableSkeleton cols={7} />
+            ) : filteredProducts && filteredProducts.length > 0 ? (
+              filteredProducts.map((product, index) => (
                 <TableRow key={index}>
-                  {/* Images - Show up to 3 */}
-
                   <TableCell className="font-medium">{product.name}</TableCell>
                   <TableCell>{product.category.name}</TableCell>
                   <TableCell className="truncate max-w-[200px]">
@@ -96,10 +119,12 @@ const Products = () => {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={8}
+                  colSpan={7}
                   className="text-center py-4 text-gray-500"
                 >
-                  No products available
+                  {searchQuery
+                    ? "No matching products found"
+                    : "No products available"}
                 </TableCell>
               </TableRow>
             )}

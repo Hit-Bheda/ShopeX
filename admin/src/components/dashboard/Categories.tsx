@@ -14,7 +14,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useAuthStore } from "@/store/AuthStore";
 import { getCategories } from "@/api/actions";
 import CategoryActionsDropdown from "./CategoryActionsDropdown";
-import { CategoryTableSkeleton } from "../Skeletons";
+import { TableSkeleton } from "../Skeletons";
 
 interface ResponseType {
   _id: string;
@@ -25,20 +25,22 @@ interface ResponseType {
 const Categories = () => {
   const accessToken = useAuthStore((state) => state.accessToken);
   const [data, setData] = useState<ResponseType[] | null>(null);
-  
+  const [loading, setLoading] = useState<boolean>(true);
+
   const fetchCategories = useCallback(async () => {
     try {
       if (!accessToken) return;
+      setLoading(true);
       const categories = await getCategories(accessToken);
       setData(categories);
     } catch (error) {
       console.error("Failed to fetch categories:", error);
+    } finally {
+      setLoading(false);
     }
-  },[accessToken]);
+  }, [accessToken]);
 
   useEffect(() => {
-
-
     fetchCategories();
   }, [fetchCategories]);
 
@@ -72,30 +74,28 @@ const Categories = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data ? (
-              data.length > 0 ? (
-                data.map((category) => (
-                  <TableRow key={category._id}>
-                    <TableCell>{category.name}</TableCell>
-                    <TableCell>{category.description || "N/A"}</TableCell>
-                    <TableCell>
-                      <CategoryActionsDropdown
-                        id={category._id}
-                        accessToken={accessToken}
-                        getCategories={fetchCategories}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={3} className="text-center py-4">
-                    No categories found.
+            {loading ? (
+              <TableSkeleton cols={3} />
+            ) : data && data.length > 0 ? (
+              data.map((category) => (
+                <TableRow key={category._id}>
+                  <TableCell>{category.name}</TableCell>
+                  <TableCell>{category.description || "N/A"}</TableCell>
+                  <TableCell>
+                    <CategoryActionsDropdown
+                      id={category._id}
+                      accessToken={accessToken}
+                      getCategories={fetchCategories}
+                    />
                   </TableCell>
                 </TableRow>
-              )
+              ))
             ) : (
-              <CategoryTableSkeleton />
+              <TableRow>
+                <TableCell colSpan={3} className="text-center py-4">
+                  No categories found.
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>

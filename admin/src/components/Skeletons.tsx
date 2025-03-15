@@ -1,5 +1,12 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function UserSkeleton() {
@@ -14,33 +21,32 @@ export function UserSkeleton() {
   );
 }
 
-export function CategoryTableSkeleton() {
+interface Props {
+  cols: number;
+}
+
+export const TableSkeleton: React.FC<Props> = ({ cols }) => {
   return (
     <>
       {Array.from({ length: 8 }).map((_, index) => (
-        <SingleRow key={index} />
+        <SingleRow key={index} cols={cols} />
       ))}
-      <SingleRow />
+      <SingleRow cols={cols} />
     </>
-  );
-}
-
-const SingleRow = () => {
-  return (
-    <TableRow>
-      <TableCell>
-        <Skeleton className=" h-5" />
-      </TableCell>
-      <TableCell>
-        <Skeleton className="h-5" />
-      </TableCell>
-      <TableCell>
-        <Skeleton className="h-5" />
-      </TableCell>
-    </TableRow>
   );
 };
 
+const SingleRow = ({ cols }: { cols: number }) => {
+  return (
+    <TableRow>
+      {Array.from({ length: cols }).map((_, index) => (
+        <TableCell key={index}>
+          <Skeleton className="h-5" />
+        </TableCell>
+      ))}
+    </TableRow>
+  );
+};
 
 export function LoadingSkeleton() {
   return (
@@ -86,6 +92,5 @@ export function LoadingSkeleton() {
         </Table>
       </CardContent>
     </Card>
-  )
+  );
 }
-
