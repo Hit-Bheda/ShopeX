@@ -12,37 +12,39 @@ import { getProducts } from "@/api/actions";
 import { useAuthStore } from "@/store/AuthStore";
 
 type Props = {
+  value: string;
+  onChange: (value: string) => void;
   placeholder?: string;
 };
 
-type productType = z.infer<typeof ProductResponseSchema>
+type productType = z.infer<typeof ProductResponseSchema>;
 
 const HomeProductDropdown: React.FC<Props> = ({
+  value,
+  onChange,
   placeholder = "Select Product!",
 }) => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [value, setValue] = useState<string>("");
-  const [products, setProducts] = useState<productType[]>()
-  const accessToken = useAuthStore((state) => state.accessToken)
-
-  const onSelectCategory = (selectedValue: string) => {
-    setValue(selectedValue);
-  };
-
-  const initProduct = async (accessToken: string) => {
-    const data: productType[] = await getProducts(accessToken)
-    setProducts(data)
-  }
+  const [products, setProducts] = useState<productType[]>([]);
+  const accessToken = useAuthStore((state) => state.accessToken);
 
   useEffect(() => {
-    setLoading(true)
-    if(!accessToken) return
-    initProduct(accessToken)
-    setLoading(false)  
+    const initProduct = async () => {
+      if (!accessToken) return;
+      setLoading(true);
+      try {
+        const data: productType[] = await getProducts(accessToken);
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+      setLoading(false);
+    };
+    initProduct();
   }, [accessToken]);
 
   return (
-    <Select value={value} onValueChange={onSelectCategory} >
+    <Select value={value} onValueChange={onChange}>
       <SelectTrigger>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
@@ -51,18 +53,22 @@ const HomeProductDropdown: React.FC<Props> = ({
           <SelectItem value="loading" disabled>
             Loading...
           </SelectItem>
-        ) : products && products.length > 0 ? (
+        ) : products.length > 0 ? (
           products.map((product) => (
             <SelectItem key={product._id} value={product._id}>
               <div className="flex items-center gap-1">
-                <img src={product.images[0]} alt="" className="w-[20px]" />
-              {product.name}
+                <img
+                  src={product.images[0]}
+                  alt={product.name}
+                  className="w-[20px]"
+                />
+                {product.name}
               </div>
             </SelectItem>
           ))
         ) : (
-          <SelectItem value="no_categories" disabled>
-            No categories available
+          <SelectItem value="no_products" disabled>
+            No products available
           </SelectItem>
         )}
       </SelectContent>

@@ -76,11 +76,26 @@ export const deleteProduct = async (req: Request, res: Response) => {
   res.status(200).json({ message: "Item Deleted Successfully!", data });
 };
 
-export const setHomeProducts = async ( req: Request, res: Response ) => {
-  const { product1, product2 } = req.body
-  if(!product1 || !product2) throw new Error("Products Required!")
+export const setHeroProducts = async (req: Request, res: Response) => {
+  const { product1, product2 } = req.body;
+  if (!product1 || !product2) throw new Error("Products Required!");
 
-  const data = await LayoutModel.create({ product1, product2 })
+  const existingLayout = await LayoutModel.findOne();
+  let layout;
 
-  res.status(200).json({ message: "Product is setted successfully!", data})
-}
+  if (existingLayout) {
+    layout = await LayoutModel.findByIdAndUpdate(
+      existingLayout._id,
+      { heroProducts: [product1, product2] },
+      { new: true },
+    ).populate("heroProducts");
+  } else {
+    layout = await LayoutModel.create({
+      heroProducts: [product1, product2],
+      homeCategory: null,
+    });
+  }
+
+  res.status(200).json({ message: "Product is setted successfully!" });
+};
+

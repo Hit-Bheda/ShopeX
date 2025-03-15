@@ -144,3 +144,27 @@ export const deleteProduct = async (id: string, accessToken: string) => {
     console.error(error);
   }
 };
+
+export const setHeroProducts = async (
+  accessToken: string,
+  products: { product1: string; product2: string },
+) => {
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/api/v1/admin/set-hero-products`,
+      products,
+      {
+        headers: {
+          Authorization: accessToken,
+        },
+      },
+    );
+    return res.data.message;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || error.message);
+    }
+    throw error;
+    console.error(error);
+  }
+};

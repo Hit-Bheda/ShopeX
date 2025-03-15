@@ -12,10 +12,10 @@ modelOptions({
   options: { allowMixed: 0 },
 });
 export class Layout {
-  @Prop({ type: () => [Product], required: true })
-  public heroProducts!: Product[];
+  @Prop({ ref: () => Product })
+  public heroProducts!: Ref<Product>[];
 
-  @Prop({ ref: () => Category, required: true })
+  @Prop({ ref: () => Category })
   public homeCategory!: Ref<Category>;
 }
 
