@@ -13,3 +13,13 @@ export const getProducts = async (category: string, limit: number) => {
     console.error(error);
   }
 };
+
+export const getHeroProducts = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/api/v1/products/hero-products`);
+    console.log(res.data.products);
+    return res.data.products;
+  } catch (error) {
+    console.error(error);
+  }
+};

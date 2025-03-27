@@ -29,7 +29,11 @@ export const sendSingleProduct = async (req: Request, res: Response) => {
   res.status(200).json({ product });
 };
 
-export const getHomeProducts = async ( req: Request, res: Response ) => {
-  const data = await LayoutModel.findOne().sort({ timestamp: -1 })
-  res.status(200).json({data})
-}
+export const getHeroProducts = async (req: Request, res: Response) => {
+  const data = await LayoutModel.findOne()
+    .populate("heroProducts")
+    .sort({ timestamp: -1 });
+  if (!data || data.heroProducts.length <= 0)
+    res.status(404).json({ message: "Data Not Found!" });
+  res.status(200).json({ products: data?.heroProducts });
+};
