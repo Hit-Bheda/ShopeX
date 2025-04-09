@@ -110,6 +110,7 @@ const Products = () => {
                   <TableCell>
                     <ProductActionsDropdown
                       id={product._id}
+                      product={product}
                       accessToken={accessToken}
                       initFunction={initProducts}
                     />

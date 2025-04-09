@@ -62,7 +62,6 @@ export const getProduct = async (req: Request, res: Response) => {
   let products = await ProductModel.find()
     .populate({
       path: "category",
-      select: "name -_id", // Only select 'name' and exclude '_id'
     })
     .lean(); // Convert to plain JavaScript object
   res.status(200).json(products);
@@ -105,9 +104,10 @@ export const setHeroProducts = async (req: Request, res: Response) => {
 };
 
 export const updateProduct = async (req: Request, res: Response) => {
-  const { id, images, name, category, description, quantity, price, sizes } =
+  const { _id, images, name, category, description, quantity, price, sizes } =
     req.body;
-  const data = await ProductModel.findByIdAndUpdate(id, {
+  console.log(_id);
+  const data = await ProductModel.findByIdAndUpdate(_id, {
     images,
     name,
     category,
