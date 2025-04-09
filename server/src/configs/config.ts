@@ -17,12 +17,14 @@ const config: configType = {
   port: parseInt(process.env.PORT || "5000"),
   mongoURI: process.env.MONGODB_URI || "",
   secret: process.env.SECRET || "",
-  origin: process.env.ORIGIN?.split(",") || ["http://localhost:5173"],
+  origin: process.env.ORIGIN?.split(",") || "",
   cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME || "",
   cloundinaryApiKey: process.env.CLOUDINARY_API_KEY || "",
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET || "",
 };
 
+if (!config.origin)
+  errorLogger.error("Origin not found!. Please add it to your .env!.");
 if (!config.mongoURI) {
   errorLogger.error("MongoDB URI is missing. Please add it to your .env file.");
 }
