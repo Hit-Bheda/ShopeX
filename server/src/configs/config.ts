@@ -17,7 +17,11 @@ const config: configType = {
   port: parseInt(process.env.PORT || "5000"),
   mongoURI: process.env.MONGODB_URI || "",
   secret: process.env.SECRET || "",
-  origin: process.env.ORIGIN?.split(",") || "",
+  origin: process.env.ORIGIN
+    ? process.env.ORIGIN.split(",")
+        .map((o) => o.trim())
+        .filter(Boolean)
+    : [],
   cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME || "",
   cloundinaryApiKey: process.env.CLOUDINARY_API_KEY || "",
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET || "",
