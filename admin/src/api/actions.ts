@@ -1,8 +1,4 @@
-import {
-  EditProductSchema,
-  ProductResponseSchema,
-  ProductSchema,
-} from "@/schemas";
+import { EditProductSchema, ProductSchema } from "@/schemas";
 import axios from "axios";
 import { z } from "zod";
 
