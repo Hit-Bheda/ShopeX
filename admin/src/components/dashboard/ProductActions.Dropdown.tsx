@@ -9,6 +9,7 @@ import { Ellipsis, Folder, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { deleteProduct } from "@/api/actions";
 import { toast } from "@/hooks/use-toast";
+import EditProductDialog from "./EditProductDialog";
 
 interface Props {
   id: string;
@@ -40,8 +41,10 @@ const ProductActionsDropdown: React.FC<Props> = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-48 rounded-lg">
         <DropdownMenuItem>
-          <Folder className="text-muted-foreground" />
-          <span>Edit</span>
+          <EditProductDialog initFunction={initFunction}>
+            <Folder className="text-muted-foreground" />
+            <span>Edit</span>
+          </EditProductDialog>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleDelete}>

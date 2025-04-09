@@ -10,6 +10,7 @@ import {
   getProduct,
   getUser,
   setHeroProducts,
+  updateProduct,
   uploadFile,
 } from "../../controllers/admin/admin.controller";
 import AdminVerifier from "../../middlewares/admin-verifier.middleware";
@@ -62,6 +63,11 @@ const privateRoutes: Route[] = [
     path: "/set-hero-products",
     method: "post",
     handler: setHeroProducts,
+  },
+  {
+    path: "/update-product",
+    method: "post",
+    handler: updateProduct,
   },
 ];
 

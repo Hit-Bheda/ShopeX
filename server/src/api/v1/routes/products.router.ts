@@ -16,14 +16,14 @@ const privateRoutes: Route[] = [
     handler: sendProducts,
   },
   {
-    path: "/products/:id",
-    method: "get",
-    handler: sendSingleProduct,
-  },
-  {
     path: "/hero-products",
     method: "get",
     handler: getHeroProducts,
+  },
+  {
+    path: "/:id",
+    method: "get",
+    handler: sendSingleProduct,
   },
 ];
 

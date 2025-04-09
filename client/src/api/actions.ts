@@ -23,3 +23,13 @@ export const getHeroProducts = async () => {
     console.error(error);
   }
 };
+
+export const getSingleProduct = async (id: string) => {
+  try {
+    const res = await axios.get(`${BASE_URL}/api/v1/products/${id}`);
+    return res.data.product;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};

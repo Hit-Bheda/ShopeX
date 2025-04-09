@@ -1,4 +1,4 @@
-import { ProductSchema } from "@/schemas";
+import { ProductResponseSchema, ProductSchema } from "@/schemas";
 import axios from "axios";
 import { z } from "zod";
 
@@ -165,6 +165,27 @@ export const setHeroProducts = async (
       throw new Error(error.response?.data?.message || error.message);
     }
     throw error;
+    console.error(error);
+  }
+};
+
+export const updateProduct = async (
+  data: z.infer<typeof ProductResponseSchema>,
+  accessToken: string,
+) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/api/v1/admin/update-product`,
+      data,
+      {
+        headers: {
+          Authorization: `${accessToken}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error) {
     console.error(error);
   }
 };

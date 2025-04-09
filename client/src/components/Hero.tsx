@@ -1,30 +1,19 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import HeroCard from "./HeroCard";
-import { getHeroProducts } from "../api/actions";
 import { ProductResponseSchema } from "../schemas";
 import { z } from "zod";
 
 type productsType = z.infer<typeof ProductResponseSchema>[];
 
-const Hero = () => {
-  const [heroProducts, setHeroProducts] = useState<productsType>();
-  const [loading, setLoading] = useState<boolean>(true);
+interface Props {
+  heroProducts?: productsType;
+}
 
-  const initFunction = async () => {
-    setLoading(true);
-    const data = await getHeroProducts();
-    await setHeroProducts(data);
-    setLoading(false);
-  };
-  useEffect(() => {
-    initFunction();
-  }, []);
-
+const Hero: React.FC<Props> = ({ heroProducts }) => {
   console.log("Hello", heroProducts);
   if (!heroProducts) return;
   const product1 = heroProducts[0];
   const product2 = heroProducts[1];
-  if (loading) return <div>Loading...</div>;
   return (
     <div className="h-[calc(100%-3.7rem)] mt-[3.7rem] relative">
       <h1 className="absolute x-[50%] top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] text-white text-[18vw] md:text-[15vw] font-medium">

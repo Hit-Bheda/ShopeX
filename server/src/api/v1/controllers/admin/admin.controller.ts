@@ -104,3 +104,17 @@ export const setHeroProducts = async (req: Request, res: Response) => {
   res.status(200).json({ message: "Product is setted successfully!" });
 };
 
+export const updateProduct = async (req: Request, res: Response) => {
+  const { id, images, name, category, description, quantity, price, sizes } =
+    req.body;
+  const data = await ProductModel.findByIdAndUpdate(id, {
+    images,
+    name,
+    category,
+    description,
+    quantity,
+    price,
+    sizes,
+  });
+  res.status(200).json({ message: "Product Updated Successfully!", data });
+};

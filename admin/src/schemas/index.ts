@@ -38,4 +38,14 @@ export const ProductResponseSchema = z.object({
   sizes: z.array(z.string()).min(1, "Please Select Available Sizes!"),
 });
 
-// export const HomeProductSchema = z.object
+export const EditProductSchema = z.object({
+  _id: z.string(),
+  images: z.array(z.string().min(1, "Image Is Required!")),
+  name: z.string().min(1, "Product name is required"),
+  description: z.string().optional(),
+  category: z.string().min(1, "Category is required"),
+  quantity: z.coerce.number().min(1, "Quantity must be at least 1"),
+  price: z.coerce.number().min(0.01, "Price must be at least 0.01"),
+  sizes: z.array(z.string()).min(1, "Please Select Available Sizes!"),
+});
+

@@ -22,7 +22,7 @@ export const sendProducts = async (req: Request, res: Response) => {
 export const sendSingleProduct = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const product = await ProductModel.findOne({ id });
+  const product = await ProductModel.findById(id);
 
   if (!product) return new Error("Product Not Found!");
 
