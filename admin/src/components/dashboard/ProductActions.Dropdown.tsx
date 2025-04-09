@@ -26,7 +26,6 @@ const ProductActionsDropdown: React.FC<Props> = ({
   initFunction,
   product,
 }) => {
-  console.log(product);
   const handleDelete = async () => {
     if (!accessToken) return;
 

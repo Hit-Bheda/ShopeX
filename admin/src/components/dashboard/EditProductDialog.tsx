@@ -94,7 +94,7 @@ const EditProductDialog: React.FC<Props> = ({
     if (!accessToken) return;
 
     // Transform EditProductSchema data back to ProductResponseSchema format for the API
-    const updatedData: z.infer<typeof ProductResponseSchema> = {
+    const updatedData: z.infer<typeof EditProductSchema> = {
       ...formData,
       images,
       // Convert string category back to object format expected by ProductResponseSchema

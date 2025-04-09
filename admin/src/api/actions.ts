@@ -1,4 +1,8 @@
-import { ProductResponseSchema, ProductSchema } from "@/schemas";
+import {
+  EditProductSchema,
+  ProductResponseSchema,
+  ProductSchema,
+} from "@/schemas";
 import axios from "axios";
 import { z } from "zod";
 
@@ -170,7 +174,7 @@ export const setHeroProducts = async (
 };
 
 export const updateProduct = async (
-  data: z.infer<typeof ProductResponseSchema>,
+  data: z.infer<typeof EditProductSchema>,
   accessToken: string,
 ) => {
   try {
