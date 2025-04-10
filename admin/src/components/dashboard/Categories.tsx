@@ -49,8 +49,8 @@ const Categories = () => {
       {/* Header */}
       <div className="flex items-center flex-row justify-between w-full border-b-[1px] pb-4">
         <div>
-          <h1 className="text-[1.5rem] font-bold">Categories</h1>
-          <p className="text-[.9rem] font-light">Manage Your Categories!</p>
+          <h1 className="text-2xl font-bold">Categories</h1>
+          <p className="text-sm text-gray-600">Manage Your Categories!</p>
         </div>
         <AddCategoryDialog initFunction={fetchCategories}>
           <Button className="flex items-center justify-between">
