@@ -33,3 +33,15 @@ export const getSingleProduct = async (id: string) => {
     return null;
   }
 };
+
+export const getHomeCategory = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/api/v1/products/home-category`);
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || error.message);
+    }
+    console.error(error);
+  }
+};

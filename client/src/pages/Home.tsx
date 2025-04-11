@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import ApparelSection from "../components/ApparelSection";
 import Hero from "../components/Hero";
-import { getHeroProducts } from "../api/actions";
+import { getHeroProducts, getHomeCategory } from "../api/actions";
 import { ProductResponseSchema } from "../schemas";
 import { z } from "zod";
 
-type productsType = z.infer<typeof ProductResponseSchema>[];
+type productsType = z.infer<typeof ProductResponseSchema>;
 
 const Home = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [heroProducts, setHeroProducts] = useState<productsType>();
+  const [heroProducts, setHeroProducts] = useState<productsType[]>();
+  const [categoryProducts, setCategoryProducts] = useState<productsType[]>();
 
   useEffect(() => {
     const initFunction = async () => {
@@ -17,6 +18,9 @@ const Home = () => {
         setLoading(true);
         const data = await getHeroProducts();
         await setHeroProducts(data);
+        const data2 = await getHomeCategory();
+        await setCategoryProducts(data2.products);
+        console.log("This is ", categoryProducts);
       } catch (error) {
         console.error(error);
       } finally {
@@ -34,7 +38,7 @@ const Home = () => {
   ) : (
     <div className="w-full h-full relative">
       <Hero heroProducts={heroProducts} />
-      <ApparelSection />
+      <ApparelSection products={categoryProducts} />
     </div>
   );
 };

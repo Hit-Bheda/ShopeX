@@ -10,6 +10,7 @@ import {
   getProduct,
   getUser,
   setHeroProducts,
+  setHomeCategory,
   updateProduct,
   uploadFile,
 } from "../../controllers/admin/admin.controller";
@@ -68,6 +69,11 @@ const privateRoutes: Route[] = [
     path: "/update-product",
     method: "post",
     handler: updateProduct,
+  },
+  {
+    path: "/set-home-category",
+    method: "post",
+    handler: setHomeCategory,
   },
 ];
 

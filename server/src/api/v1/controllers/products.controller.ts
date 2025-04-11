@@ -37,3 +37,15 @@ export const getHeroProducts = async (req: Request, res: Response) => {
     res.status(404).json({ message: "Data Not Found!" });
   res.status(200).json({ products: data?.heroProducts });
 };
+
+export const getHomeCategory = async (req: Request, res: Response) => {
+  const data = await LayoutModel.findOne()
+    .populate("homeCategory")
+    .sort({ timestamp: -1 });
+  if (!data) res.status(404).json({ message: "Data Not Found!" });
+
+  const products = await ProductModel.find({
+    category: data?.homeCategory._id,
+  }).populate("category");
+  res.status(200).json({ products, category: data?.homeCategory });
+};

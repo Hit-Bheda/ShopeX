@@ -2,6 +2,7 @@ import { Router, Request, Response, RequestHandler } from "express";
 import { Route } from "../../../types/types";
 import {
   getHeroProducts,
+  getHomeCategory,
   sendProducts,
   sendSingleProduct,
 } from "../controllers/products.controller";
@@ -19,6 +20,11 @@ const privateRoutes: Route[] = [
     path: "/hero-products",
     method: "get",
     handler: getHeroProducts,
+  },
+  {
+    path: "/home-category",
+    method: "get",
+    handler: getHomeCategory,
   },
   {
     path: "/:id",

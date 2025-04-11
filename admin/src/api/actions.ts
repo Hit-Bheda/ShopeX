@@ -189,3 +189,44 @@ export const updateProduct = async (
     console.error(error);
   }
 };
+
+export const setHomeCategory = async (
+  accessToken: string,
+  category: { _id: string },
+) => {
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/api/v1/admin/set-home-category`,
+      category,
+      {
+        headers: {
+          Authorization: accessToken,
+        },
+      },
+    );
+    return res.data.message;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || error.message);
+    }
+    throw error;
+    console.error(error);
+  }
+};
+
+export const getHomeCategory = async (accessToken: string) => {
+  try {
+    const res = await axios.post(`${BASE_URL}/api/v1/admin/get-home-category`, {
+      headers: {
+        Authorization: accessToken,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || error.message);
+    }
+    throw error;
+    console.error(error);
+  }
+};

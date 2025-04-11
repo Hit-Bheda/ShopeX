@@ -96,7 +96,6 @@ export const setHeroProducts = async (req: Request, res: Response) => {
   } else {
     layout = await LayoutModel.create({
       heroProducts: [product1, product2],
-      homeCategory: null,
     });
   }
 
@@ -117,4 +116,34 @@ export const updateProduct = async (req: Request, res: Response) => {
     sizes,
   });
   res.status(200).json({ message: "Product Updated Successfully!", data });
+};
+
+export const getHomeCategory = async (req: Request, res: Response) => {
+  const data = await LayoutModel.findOne()
+    .populate("homeCategory")
+    .sort({ timestamp: -1 });
+  if (!data || data.heroProducts.length <= 0)
+    res.status(404).json({ message: "Data Not Found!" });
+  res.status(200).json({ products: data?.heroProducts });
+};
+
+export const setHomeCategory = async (req: Request, res: Response) => {
+  const { _id } = req.body;
+  if (!_id) throw new Error("Id not found!");
+  const existingLayout = await LayoutModel.findOne();
+  let layout;
+
+  if (existingLayout) {
+    layout = await LayoutModel.findByIdAndUpdate(
+      existingLayout._id,
+      { homeCategory: _id },
+      { new: true },
+    ).populate("homeCategory");
+  } else {
+    layout = await LayoutModel.create({
+      homeCategory: _id,
+    });
+  }
+
+  res.status(200).json({ message: "Home Category is setted successfully!" });
 };

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <header className="flex items-center justify-between py-3 fixed px-10 z-10 top-0 left-0 w-screen bg-white">
+    <header className="flex items-center z-50 justify-between py-3 fixed px-10 top-0 left-0 w-screen bg-white">
       <Link to="/" className="text-[1.5rem] font-bold">
         ShopeX
       </Link>

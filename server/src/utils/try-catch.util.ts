@@ -8,6 +8,7 @@ const TryCatch =
     try {
       await handler(req, res);
     } catch (error) {
+      console.log(error);
       const message: String = String(getErrorMessage(error));
       errorLogger.error(message);
       res.status(500).json({ message: message });
