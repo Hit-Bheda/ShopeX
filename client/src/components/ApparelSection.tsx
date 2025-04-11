@@ -5,7 +5,7 @@ import { z } from "zod";
 import { ProductResponseSchema } from "../schemas";
 
 interface props {
-  products: z.infer<typeof ProductResponseSchema>[];
+  products?: z.infer<typeof ProductResponseSchema>[];
 }
 
 const ApparelSection: React.FC<props> = ({ products }) => {
@@ -24,7 +24,7 @@ const ApparelSection: React.FC<props> = ({ products }) => {
     <div className="w-full h-screen flex items-center px-10 flex-col justify-center">
       <div className="flex items-center justify-between w-full py-8">
         <h1 className="text-[1.7rem] sm:text-[2.5rem] font-bold">
-          {products[0].category.name}
+          {products ? products[0].category.name : null}
         </h1>
         <div className="flex items-center justify-between gap-2 md:w-[22%]">
           <p className="text-[1rem] md:text-[1.7rem] font-medium tracking-wider">

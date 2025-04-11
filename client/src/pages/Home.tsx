@@ -33,7 +33,7 @@ const Home = () => {
 
   return loading ? (
     <div className="w-full h-full flex items-center justify-center">
-      <h1>Loading</h1>
+      <h1>Loading...</h1>
     </div>
   ) : (
     <div className="w-full h-full relative">

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const ProductResponseSchema = z.object({
   _id: z.string(),
-  images: z.array(z.string().min(1, "Image Is Required!")),
+  images: z.array(z.string().min(2, "Image Is Required!")),
   name: z.string().min(1, "Product name is required"),
   category: z.object({
     name: z.string(),
