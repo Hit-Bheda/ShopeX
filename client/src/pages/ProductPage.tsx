@@ -5,6 +5,7 @@ import { getSingleProduct } from "../api/actions";
 import { useParams } from "react-router-dom";
 import { z } from "zod";
 import { ProductResponseSchema } from "../schemas";
+import { useAuthStore } from "../store/AuthStore";
 
 type productType = z.infer<typeof ProductResponseSchema>;
 
@@ -12,6 +13,10 @@ const ProductPage = () => {
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<productType | null>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [size, setSize] = useState<string>();
+  const [quantity, setQuantity] = useState<number>(0);
+  const cart = useAuthStore((state) => state.cart);
+  const setCart = useAuthStore((state) => state.setCart);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -20,12 +25,26 @@ const ProductPage = () => {
       const res = await getSingleProduct(id);
       console.log("Res:", res);
       if (!res) setData(null);
-      await setData(res);
+      setData(res);
       setLoading(false);
     };
 
     getProduct();
   }, [id]);
+
+  // TODO: Add the erro handling it this
+  const addToCart = () => {
+    if (!data?._id || !quantity || !size) return;
+    setCart({
+      productId: data?._id,
+      productQuantity: quantity,
+      productSize: size,
+    });
+  };
+
+  useEffect(() => {
+    console.log("Cart ", cart);
+  }, [cart]);
 
   return loading ? (
     <div className="w-full h-full flex items-center justify-center">
@@ -77,12 +96,13 @@ const ProductPage = () => {
           <div>
             <h3 className="text-xs mb-2">SIZE</h3>
             <div className="grid grid-cols-6 gap-2">
-              {data.sizes.map((size) => (
+              {data.sizes.map((s) => (
                 <button
-                  key={size}
-                  className={`border border-white py-2 px-4 text-xs ${size === "M" ? "bg-white text-black" : ""}`}
+                  key={s}
+                  onClick={() => setSize(s)}
+                  className={`border border-zinc-400 py-2 px-4 text-xs ${s === size ? "bg-black text-white" : ""}`}
                 >
-                  {size}
+                  {s}
                 </button>
               ))}
             </div>
@@ -91,15 +111,25 @@ const ProductPage = () => {
           {/* Quantity */}
           <div>
             <h3 className="text-xs mb-2">QUANTITY</h3>
-            <div className="flex border border-white w-24">
-              <button className="px-3 py-1 border-r border-white">-</button>
+            <div className=" gap-3">
+              <button
+                className="px-3 py-1 border border-zinc-400"
+                onClick={() => setQuantity(quantity - 1)}
+              >
+                -
+              </button>
               <input
                 type="text"
-                value="1"
-                className="w-full text-center bg-transparent"
+                value={quantity}
+                className="w-12 text-center bg-transparent"
                 readOnly
               />
-              <button className="px-3 py-1 border-l border-white">+</button>
+              <button
+                className="px-3 py-1 border border-zinc-400"
+                onClick={() => setQuantity(quantity + 1)}
+              >
+                +
+              </button>
             </div>
           </div>
 
@@ -108,7 +138,10 @@ const ProductPage = () => {
             <button className="w-full bg-black text-white border border-white py-3 font-medium">
               BUY NOW
             </button>
-            <button className="w-full bg-blue-500 text-white py-3 font-medium">
+            <button
+              className="w-full bg-blue-500 text-white py-3 font-medium"
+              onClick={addToCart}
+            >
               ADD TO CART
             </button>
           </div>

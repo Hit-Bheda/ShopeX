@@ -3,6 +3,8 @@ import AuthMiddlware from "../middlewares/AuthMidleware.tsx";
 import Home from "../pages/Home.tsx";
 import { Routes, Route } from "react-router";
 import ProductPage from "../pages/ProductPage.tsx";
+import { useEffect } from "react";
+import { useAuthStore } from "../store/AuthStore.ts";
 
 interface RoutesType {
   path: string;
@@ -32,6 +34,22 @@ const Router: React.FC = () => {
       isPrivate: false,
     },
   ];
+
+  const cart = useAuthStore((state) => state.cart);
+  const setCartFromLocal = useAuthStore((state) => state.setCartFromLocal);
+
+  // Load cart from localStorage on app load
+  useEffect(() => {
+    const localCart = localStorage.getItem("cart");
+    if (localCart) {
+      setCartFromLocal(JSON.parse(localCart));
+    }
+  }, []);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
   return (
     <Routes>
       <Route element={<Layout />}>
