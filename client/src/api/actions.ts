@@ -45,3 +45,15 @@ export const getHomeCategory = async () => {
     console.error(error);
   }
 };
+
+export const getCartProducts = async (cartProducts: unknown) => {
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/api/v1/products/get-cart-products`,
+      { cartProducts },
+    );
+    return res.data.products;
+  } catch (error) {
+    console.error(error);
+  }
+};

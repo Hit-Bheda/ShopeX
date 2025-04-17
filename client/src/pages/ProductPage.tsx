@@ -13,39 +13,67 @@ const ProductPage = () => {
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<productType | null>();
   const [loading, setLoading] = useState<boolean>(true);
-  const [size, setSize] = useState<string>();
-  const [quantity, setQuantity] = useState<number>(0);
-  const cart = useAuthStore((state) => state.cart);
+  const [size, setSize] = useState<string>("");
+  const [quantity, setQuantity] = useState<number>(1); // Start with 1 instead of 0
+  const [error, setError] = useState<string>("");
   const setCart = useAuthStore((state) => state.setCart);
 
   useEffect(() => {
     const getProduct = async () => {
       setLoading(true);
-      if (!id) throw new Error("Something went wrong!");
-      const res = await getSingleProduct(id);
-      console.log("Res:", res);
-      if (!res) setData(null);
-      setData(res);
-      setLoading(false);
+      try {
+        if (!id) throw new Error("Product ID is missing!");
+        const res = await getSingleProduct(id);
+
+        if (!res) {
+          setData(null);
+        } else {
+          setData(res);
+        }
+      } catch (err) {
+        console.error("Error fetching product:", err);
+        setData(null);
+      } finally {
+        setLoading(false);
+      }
     };
 
     getProduct();
   }, [id]);
 
-  // TODO: Add the erro handling it this
   const addToCart = () => {
-    if (!data?._id || !quantity || !size) return;
+    // Error handling for missing data
+    if (!data?._id) {
+      setError("Product data is unavailable");
+      return;
+    }
+
+    if (!size) {
+      setError("Please select a size");
+      return;
+    }
+
+    if (quantity < 1) {
+      setError("Please select a valid quantity");
+      return;
+    }
+
+    // Add to cart
     setCart({
-      productId: data?._id,
+      productId: data._id,
       productQuantity: quantity,
       productSize: size,
     });
+
+    // Show success feedback
+    setError("Item added to cart successfully!");
+
+    // Reset form after successful add (optional)
+    // setSize("");
+    // setQuantity(1);
   };
 
-  useEffect(() => {
-    console.log("Cart ", cart);
-  }, [cart]);
-
+  if (error) console.log(error);
   return loading ? (
     <div className="w-full h-full flex items-center justify-center">
       <h1>Loading...</h1>
