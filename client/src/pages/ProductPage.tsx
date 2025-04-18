@@ -16,7 +16,6 @@ const ProductPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [size, setSize] = useState<string>("");
   const [quantity, setQuantity] = useState<number>(1); // Start with 1 instead of 0
-  const [error, setError] = useState<string>("");
   const setCart = useAuthStore((state) => state.setCart);
 
   useEffect(() => {
@@ -45,17 +44,17 @@ const ProductPage = () => {
   const addToCart = () => {
     // Error handling for missing data
     if (!data?._id) {
-      setError("Product data is unavailable");
+      toast.error("Product data is unavailable");
       return;
     }
 
     if (!size) {
-      setError("Please select a size");
+      toast.error("Please select a size");
       return;
     }
 
     if (quantity < 1) {
-      setError("Please select a valid quantity");
+      toast.error("Please select a valid quantity");
       return;
     }
 
@@ -73,7 +72,6 @@ const ProductPage = () => {
     // setQuantity(1);
   };
 
-  if (error) console.log(error);
   return loading ? (
     <div className="w-full h-full flex items-center justify-center">
       <h1>Loading...</h1>
