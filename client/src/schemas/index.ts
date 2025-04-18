@@ -18,3 +18,17 @@ export const CartSchema = z.object({
   productSize: z.string(),
   productQuantity: z.number(),
 });
+
+export const ShippingAddressSchema = z.object({
+  streetAddress: z.string().min(1, { message: "Street address is required" }),
+  streetAddress2: z.string().optional(),
+  city: z.string().min(1, { message: "City is required" }),
+  state: z.string().min(1, { message: "State is required" }),
+  zipCode: z
+    .string()
+    .regex(/^\d{5}$/, { message: "Zip code must be 5 digits" }),
+  country: z.string().min(1, { message: "Country is required" }),
+  phone: z.string().regex(/^\d{3}-\d{3}-\d{4}$/, {
+    message: "Phone format must be xxx-xxx-xxxx",
+  }),
+});

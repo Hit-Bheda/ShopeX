@@ -3,6 +3,7 @@ import ProductCard from "./ProductCard";
 import { useRef } from "react";
 import { z } from "zod";
 import { ProductResponseSchema } from "../schemas";
+import { Link } from "react-router-dom";
 
 interface props {
   products?: z.infer<typeof ProductResponseSchema>[];
@@ -27,9 +28,12 @@ const ApparelSection: React.FC<props> = ({ products }) => {
           {products ? products[0].category.name : null}
         </h1>
         <div className="flex items-center justify-between gap-2 md:w-[22%]">
-          <p className="text-[1rem] md:text-[1.7rem] font-medium tracking-wider">
+          <Link
+            to={`/category/${products ? products[0].category.name : null}`}
+            className="text-[1rem] md:text-[1.7rem] font-medium tracking-wider"
+          >
             VIEW ALL
-          </p>
+          </Link>
           <button onClick={scrollLeft}>
             <ArrowLeft
               size={30}

@@ -10,7 +10,10 @@ export const createCategory = async (req: Request, res: Response) => {
 
   if (!name) throw new Error("Please Provide Name!");
 
-  const data = await CategoryModel.create({ name, description });
+  const data = await CategoryModel.create({
+    name: name.toLowerCase(),
+    description,
+  });
 
   res.status(200).json({ message: "Category Cretate Successfully!", data });
 };
@@ -46,14 +49,15 @@ export const createProduct = async (req: Request, res: Response) => {
   console.log(req.body);
   const { images, name, category, description, quantity, price, sizes } =
     req.body;
+
   const data = await ProductModel.create({
     images,
-    name,
+    name: name.toLowerCase(),
     category,
     description,
     quantity,
     price,
-    sizes,
+    sizes: sizes?.map((size: string) => size.toLowerCase()),
   });
   res.status(200).json({ message: "Product Cretated Successfully!", data });
 };
@@ -108,12 +112,12 @@ export const updateProduct = async (req: Request, res: Response) => {
   console.log(_id);
   const data = await ProductModel.findByIdAndUpdate(_id, {
     images,
-    name,
+    name: name.toLowerCase(),
     category,
     description,
     quantity,
     price,
-    sizes,
+    sizes: sizes?.map((size: string) => size.toLowerCase()),
   });
   res.status(200).json({ message: "Product Updated Successfully!", data });
 };

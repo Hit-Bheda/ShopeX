@@ -2,12 +2,15 @@ import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/AuthStore";
 import Cart from "./Cart";
 import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const NavBar = () => {
   const cart = useAuthStore((state) => state.cart);
   const [showCart, setShowCart] = useState<boolean>(false);
   const cartRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
   const handleClick = () => {
+    if (location.pathname == "/checkout") return;
     setShowCart(!showCart);
   };
 

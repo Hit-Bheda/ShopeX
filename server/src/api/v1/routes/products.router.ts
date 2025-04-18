@@ -1,6 +1,7 @@
 import { Router, Request, Response, RequestHandler } from "express";
 import { Route } from "../../../types/types";
 import {
+  getCartProducts,
   getHeroProducts,
   getHomeCategory,
   sendProducts,
@@ -25,6 +26,11 @@ const privateRoutes: Route[] = [
     path: "/home-category",
     method: "get",
     handler: getHomeCategory,
+  },
+  {
+    path: "/get-cart-products",
+    method: "post",
+    handler: getCartProducts,
   },
   {
     path: "/:id",

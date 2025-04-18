@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { z } from "zod";
 import { ProductResponseSchema } from "../schemas";
 import { useAuthStore } from "../store/AuthStore";
+import toast from "react-hot-toast";
 
 type productType = z.infer<typeof ProductResponseSchema>;
 
@@ -66,8 +67,7 @@ const ProductPage = () => {
     });
 
     // Show success feedback
-    setError("Item added to cart successfully!");
-
+    toast.success("Product Added To Cart!");
     // Reset form after successful add (optional)
     // setSize("");
     // setQuantity(1);

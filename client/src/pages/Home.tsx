@@ -20,7 +20,6 @@ const Home = () => {
         await setHeroProducts(data);
         const data2 = await getHomeCategory();
         await setCategoryProducts(data2.products);
-        console.log("This is ", categoryProducts);
       } catch (error) {
         console.error(error);
       } finally {

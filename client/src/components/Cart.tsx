@@ -1,9 +1,11 @@
 import React, { forwardRef, useEffect, useState } from "react";
-import { Minus, Plus, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useAuthStore } from "../store/AuthStore";
 import { getCartProducts } from "../api/actions";
 import { z } from "zod";
 import { ProductResponseSchema } from "../schemas";
+import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 type ProductType = z.infer<typeof ProductResponseSchema>;
 
@@ -20,6 +22,8 @@ const Cart = forwardRef<HTMLDivElement, Props>(
     >({});
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
+    const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
       const fetchCartProducts = async () => {
@@ -108,6 +112,10 @@ const Cart = forwardRef<HTMLDivElement, Props>(
         .toFixed(2);
     };
 
+    const handleCheckout = () => {
+      if (location.pathname == "/checkout") return;
+      navigate("/checkout");
+    };
     return (
       <div className={`p-4 space-y-6 ${className}`} ref={ref} {...props}>
         <h2 className="text-2xl font-bold">Your Cart</h2>
@@ -136,31 +144,15 @@ const Cart = forwardRef<HTMLDivElement, Props>(
               {cart.map((item) => {
                 const product = cartProducts[item.productId];
 
-                if (!product) {
-                  // Show loading placeholder for items without product data
-                  return (
-                    <li
-                      key={`${item.productId}-${item.productSize}`}
-                      className="py-6 flex items-start gap-4"
-                    >
-                      <div className="w-24 h-24 bg-gray-200 rounded-md animate-pulse"></div>
-                      <div className="flex-1">
-                        <div className="h-5 w-3/4 bg-gray-200 animate-pulse mb-2 rounded"></div>
-                        <div className="h-4 w-1/3 bg-gray-200 animate-pulse mb-2 rounded"></div>
-                        <div className="h-4 w-1/4 bg-gray-200 animate-pulse mb-4 rounded"></div>
-                        <div className="h-8 w-32 bg-gray-200 animate-pulse rounded"></div>
-                      </div>
-                    </li>
-                  );
-                }
-
+                console.log(cartProducts);
+                if (!product) toast.error("Fuck Bro!");
                 return (
                   <li
                     key={`${item.productId}-${item.productSize}`}
                     className="py-6 flex items-start gap-4"
                   >
                     {/* Product Image */}
-                    <div className="w-24 h-24 bg-gray-100 rounded-md flex-shrink-0">
+                    <div className="w-24 h-24 p-3 bg-gray-100 rounded-md flex-shrink-0">
                       {product.images && product.images.length > 0 ? (
                         <img
                           src={product.images[0]}
@@ -182,7 +174,7 @@ const Cart = forwardRef<HTMLDivElement, Props>(
                           onClick={() =>
                             removeFromCart(item.productId, item.productSize)
                           }
-                          className="text-gray-400 hover:text-red-500"
+                          className="text-gray-400 hover:text-red-500 m-2"
                           aria-label="Remove item"
                         >
                           <X size={18} />
@@ -197,56 +189,51 @@ const Cart = forwardRef<HTMLDivElement, Props>(
                       </p>
 
                       {/* Quantity Controls */}
-                      <div className="mt-4 flex items-center">
-                        <button
-                          onClick={() =>
-                            handleQuantityAdjust(
-                              item.productId,
-                              item.productSize,
-                              -1,
-                            )
-                          }
-                          disabled={item.productQuantity <= 1}
-                          className={`p-1 border rounded-l ${
-                            item.productQuantity <= 1
-                              ? "text-gray-300"
-                              : "text-gray-600"
-                          }`}
-                          aria-label="Decrease quantity"
-                        >
-                          <Minus size={16} />
-                        </button>
 
-                        <input
-                          type="number"
-                          min="1"
-                          value={item.productQuantity}
-                          onChange={(e) => {
-                            const value = parseInt(e.target.value);
-                            if (!isNaN(value)) {
-                              handleQuantityChange(
+                      <div>
+                        <h3 className="text-xs mb-2">QUANTITY</h3>
+                        <div className=" gap-3">
+                          <button
+                            className="px-3 py-1 border border-rounded"
+                            onClick={() =>
+                              handleQuantityAdjust(
                                 item.productId,
                                 item.productSize,
-                                value,
-                              );
+                                -1,
+                              )
                             }
-                          }}
-                          className="w-12 border-t border-b px-2 py-1 text-center"
-                        />
-
-                        <button
-                          onClick={() =>
-                            handleQuantityAdjust(
-                              item.productId,
-                              item.productSize,
-                              1,
-                            )
-                          }
-                          className="p-1 border rounded-r text-gray-600"
-                          aria-label="Increase quantity"
-                        >
-                          <Plus size={16} />
-                        </button>
+                          >
+                            -
+                          </button>
+                          <input
+                            type="text"
+                            value={item.productQuantity}
+                            onChange={(e) => {
+                              const value = parseInt(e.target.value);
+                              if (!isNaN(value)) {
+                                handleQuantityChange(
+                                  item.productId,
+                                  item.productSize,
+                                  value,
+                                );
+                              }
+                            }}
+                            className="w-12 text-center bg-transparent"
+                            readOnly
+                          />
+                          <button
+                            className="px-3 py-1 border border-rounded"
+                            onClick={() =>
+                              handleQuantityAdjust(
+                                item.productId,
+                                item.productSize,
+                                1,
+                              )
+                            }
+                          >
+                            +
+                          </button>
+                        </div>
                       </div>
 
                       {/* Item Total */}
@@ -274,12 +261,11 @@ const Cart = forwardRef<HTMLDivElement, Props>(
               </p>
 
               <div className="mt-6 space-y-3">
-                <button className="w-full bg-black text-white py-3 font-medium rounded">
+                <button
+                  onClick={handleCheckout}
+                  className="w-full bg-black text-white py-3 font-medium rounded"
+                >
                   Checkout
-                </button>
-
-                <button className="w-full bg-white border border-black py-3 font-medium rounded">
-                  Continue Shopping
                 </button>
               </div>
             </div>

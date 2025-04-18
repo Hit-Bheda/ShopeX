@@ -10,7 +10,6 @@ interface Props {
 }
 
 const Hero: React.FC<Props> = ({ heroProducts }) => {
-  console.log("Hello", heroProducts);
   if (!heroProducts) return;
   const product1 = heroProducts[0];
   const product2 = heroProducts[1];
