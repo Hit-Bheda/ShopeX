@@ -161,9 +161,6 @@ const ProductPage = () => {
 
           {/* Action Buttons */}
           <div className="space-y-3 pt-4">
-            <button className="w-full bg-black text-white border border-white py-3 font-medium">
-              BUY NOW
-            </button>
             <button
               className="w-full bg-blue-500 text-white py-3 font-medium"
               onClick={addToCart}

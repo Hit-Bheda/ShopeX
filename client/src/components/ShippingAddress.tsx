@@ -137,13 +137,6 @@ export default function ShippingAddress() {
               <p className="text-sm text-red-600">{errors.phone.message}</p>
             )}
           </div>
-
-          <button
-            type="submit"
-            className="mt-4 bg-black text-white px-4 py-2 rounded"
-          >
-            Submit Address
-          </button>
         </div>
       </form>
     </section>
