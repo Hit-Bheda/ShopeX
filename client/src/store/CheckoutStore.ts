@@ -12,7 +12,7 @@ type Store = {
   setShippingAddress: (data: ShippingAddressType) => void;
 };
 
-export const useAuthStore = create<Store>((set) => ({
+export const useCheckoutStore = create<Store>((set) => ({
   name: "",
   setName: (name) => set({ name }),
   shippingAddress: {
